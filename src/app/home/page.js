@@ -6,8 +6,6 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-linear-to-b from-blue-50 to-white">
       {/* Navigation */}
-      
-
       <Navbar />
 
       {/* Hero Section */}
@@ -21,76 +19,26 @@ export default function LandingPage() {
           No coding required. Open source and free forever.
         </p>
         <div className="flex gap-4 justify-center">
-          <Link href="/signup">
-            <Button variant="primary" size="lg">
+          <Link href="/builder">
+            <Button variant="primary" size="large">
               Start Building Free
             </Button>
           </Link>
-          <Link href="#features">
-            <Button variant="outline" size="lg">
+          <Link href="">
+            <Button variant="outline" size="large">
               Learn More
             </Button>
           </Link>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className="text-4xl font-bold text-center mb-16">
-          Everything you need to build forms
-        </h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          <FeatureCard
-            title="Dead Simple"
-            description="Create forms in minutes with our intuitive drag-and-drop builder. No learning curve."
-          />
-          <FeatureCard
-            title="Share Anywhere"
-            description="Get a shareable link instantly. Embed on your site or share on social media."
-          />
-          <FeatureCard
-            title="Track Responses"
-            description="View responses in real-time. Export to CSV or integrate with your tools."
-          />
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="bg-blue-600 text-white py-20">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold mb-6">
-            Ready to build your first form?
-          </h2>
-          <p className="text-xl mb-8 text-blue-100">
-            Join thousands of users creating beautiful forms every day.
-          </p>
-          <Link href="/signup">
-            <Button 
-              variant="primary" 
-              size="lg"
-              className="bg-white text-blue-600 hover:bg-gray-100"
-            >
-              Get Started - It is Free
-            </Button>
-          </Link>
-        </div>
-      </section>
-
       {/* Footer */}
-      <footer className="border-t py-12 bg-gray-50">
+      <footer className="py-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6 text-center text-gray-600">
-          <p>© 2024 FormBuilder. Open Source & Free Forever.</p>
+          <p>&copy; 2026 DeForm. Open Source & Free Forever.</p>
         </div>
       </footer>
     </div>
   );
 }
 
-function FeatureCard({ title, description }) {
-  return (
-    <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-      <h3 className="text-xl font-semibold mb-3 text-gray-900">{title}</h3>
-      <p className="text-gray-600">{description}</p>
-    </div>
-  );
-}

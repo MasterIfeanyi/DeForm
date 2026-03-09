@@ -2,7 +2,8 @@
 
 :root {
   /* Base */
-  --background: oklch(0.85 0.08 285);                /* purple */
+  --background: #ffffff;                /* white */
+  --accent-background: oklch(0.85 0.08 285);                /* purple */
   --foreground: oklch(0.2 0.03 260);          /* dark slate #1e293b */
 
   /* Card */
