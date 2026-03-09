@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+:root {
+  /* Base */
+  --background: oklch(1 0 0);                 /* white */
+  --foreground: oklch(0.2 0.03 260);          /* dark slate #1e293b */
+
+  /* Card */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.03 260);
+
+  /* Primary – fintech blue */
+  --primary: oklch(0.55 0.22 260);             /* blue-600 #2563eb */
+  --primary-foreground: oklch(1 0 0);
+
+  /* Muted – backgrounds, disabled states */
+  --muted: oklch(0.97 0.01 260);               /* gray-50 #f9fafb */
+  --muted-foreground: oklch(0.5 0.03 260);     /* gray-500 #6b7280 */
+
+  /* Danger */
+  --danger: oklch(0.64 0.2 25);                 /* red-500 #ef4444 */
+  --danger-foreground: oklch(1 0 0);
+
+  /* Ring – focus outlines */
+  --ring: var(--primary);
+
+  /* Accent – optional highlight */
+  --accent: oklch(0.92 0.05 260);               /* light blue #dbeafe */
+  --accent-foreground: oklch(0.2 0.03 260);
+
+  /* Secondary – borders, inactive elements */
+  --secondary: oklch(0.92 0.01 260);             /* gray-200 #e2e8f0 */
+  --secondary-foreground: oklch(0.37 0.02 260);  /* gray-700 #334155 */
+
+  /* Additional form‑specific tokens */
+  --border: oklch(0.92 0.01 260);                /* same as secondary */
+  --input-bg: oklch(1 0 0);
+  --placeholder: oklch(0.7 0.02 260);            /* gray-400 #9ca3af */
+  --form-inactive: oklch(0.9 0.01 260);          /* light gray for disabled */
+  --light-text: oklch(0.5 0.03 260);              /* muted foreground */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-ring: var(--ring);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  /* Custom tokens */
+  --color-border: var(--border);
+  --color-input-bg: var(--input-bg);
+  --color-placeholder: var(--placeholder);
+  --color-form-inactive: var(--form-inactive);
+  --color-light-text: var(--light-text);
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
