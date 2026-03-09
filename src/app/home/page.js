@@ -1,23 +1,14 @@
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
+import Navbar from '../_components/Navbar';
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-linear-to-b from-blue-50 to-white">
       {/* Navigation */}
-      <nav className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="text-2xl font-bold text-blue-600">FormBuilder</div>
-          <div className="flex items-center gap-4">
-            <Link href="/login">
-              <Button variant="ghost">Login</Button>
-            </Link>
-            <Link href="/signup">
-              <Button variant="primary">Get Started</Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
+      
+
+      <Navbar />
 
       {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-6 pt-20 pb-16 text-center">
