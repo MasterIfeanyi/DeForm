@@ -1,6 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SessionProvider from './_components/SessionProvider'
+import { getServerSession } from "next-auth";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,7 +19,10 @@ export const metadata = {
   description: "Open-source Form generator",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+
+  const session = await getServerSession();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
