@@ -4,13 +4,15 @@ import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { Suspense } from 'react';
+import { Input, Button } from '@/components/ui';
+
 
 function SignInForm () {
 
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  
+
   const errorParam = searchParams.get('error');
   const callbackUrl = searchParams.get('callbackUrl') || '/getting-started';
 
@@ -63,37 +65,28 @@ function SignInForm () {
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="w-full max-w-md p-8 space-y-6 bg-white rounded shadow-md">
             <h1 className="text-2xl font-bold text-center">Sign In</h1>
-
             <form className="space-y-4" onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                        Email
-                    </label>
-                    <input
-                        id="email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        disabled={loading}
-                        className="w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                </div>
+                <Input
+                    id="email"
+                    label="Email"
+                    placeholder="Enter your email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    disabled={loading}
+                />
 
-                <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                        Password
-                    </label>
-                    <input
-                        id="password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        disabled={loading}
-                        className="w-full px-3 py-2 mt-1 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                </div>
+                <Input
+                    id="password"
+                    label="Password"
+                    placeholder="Enter your password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    disabled={loading}
+                />
 
                 {/* Show error message from URL if present */}
                 {displayError && (
@@ -107,13 +100,15 @@ function SignInForm () {
                     </div>
                 )}
 
-                <button
+                <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full px-4 py-2 text-white bg-indigo-600 rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    loading={loading}
+                    variant="primary"
+                    size="large"
                 >
                     {loading ? 'Signing in...' : 'Sign In'}
-                </button>
+                </Button>
             </form>
 
             <p className="text-sm text-center text-gray-600">

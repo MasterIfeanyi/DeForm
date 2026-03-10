@@ -2,7 +2,8 @@
 
 import React from 'react'
 import Image from 'next/image'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
+import { clsx } from 'clsx'
 
 const Input = ({
     id,
@@ -13,17 +14,28 @@ const Input = ({
     required = false,
     onChange,
     value,
-    className="",
+    className = "",
+    labelClassName = "",
+    wrapperClassName = "",
     icon = false,
     imgSrc,
+    iconClassName = "",
     ...rest
   }) => {
 
   return (
-    <div>
-      {label && <label htmlFor={id} className={`text-sm text-blackDark font-medium`}>
-        {label}
-      </label>}
+    <div className={clsx("relative", wrapperClassName)}>
+      {label && (
+        <label 
+          htmlFor={id} 
+          className={clsx(
+            "text-sm text-blackDark font-medium",
+            labelClassName
+          )}
+        >
+          {label}
+        </label>
+      )}
       <input 
         id={id}
         type={type}
@@ -33,9 +45,22 @@ const Input = ({
         value={value}
         onChange={onChange}
         {...rest}
-        className="w-full px-4 py-2 h-10 text-sm font-light mt-2 bg-white border rounded outline-none transition disabled:opacity-70 disabled:cursor-not-allowed pl-4 border-grey focus:border-primary"
+        className={clsx(
+          "w-full px-4 py-2 h-10 text-sm font-light mt-2 bg-white border rounded outline-none transition disabled:opacity-70 disabled:cursor-not-allowed border-grey focus:border-primary",
+          icon && "pr-12",
+          className
+        )}
       />
-      {icon && <Image src={imgSrc} alt="icon" className="absolute right-3 bottom-2 w-6 h-6" />}
+      {icon && imgSrc && (
+        <Image 
+          src={imgSrc} 
+          alt="icon" 
+          className={clsx(
+            "absolute right-3 bottom-2 w-6 h-6",
+            iconClassName
+          )}
+        />
+      )}
     </div>
   )
 }
@@ -50,8 +75,11 @@ Input.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   className: PropTypes.string,
+  labelClassName: PropTypes.string,
+  wrapperClassName: PropTypes.string,
   icon: PropTypes.bool,
   imgSrc: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  iconClassName: PropTypes.string,
 }
 
 export default Input
