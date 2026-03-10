@@ -5,9 +5,11 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { Suspense } from 'react';
 import { Input, Button } from '@/components/ui';
+import Link from 'next/link';
+import Image from "next/image";
 
 
-function SignInForm () {
+export default function SignInForm () {
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -38,16 +40,13 @@ function SignInForm () {
       const result = await signIn('credentials', {
         email,
         password,
-        redirect: false, // Critical: we handle redirect manually
+        redirect: false,
       });
 
       if (result?.error) {
         setError('Invalid email or password');
       } else if (result?.ok) {
-        // Session cookie is now set
-        // Use Next.js router for SPA navigation
         router.push(callbackUrl);
-        // Refresh to update server components with new session
         router.refresh();
       }
     } catch (err) {
@@ -62,74 +61,27 @@ function SignInForm () {
     : errorParam ? 'An error occurred. Please try again.' : null;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="w-full max-w-md p-8 space-y-6 bg-white rounded shadow-md">
-            <h1 className="text-2xl font-bold text-center">Sign In</h1>
-            <form className="space-y-4" onSubmit={handleSubmit}>
-                <Input
-                    id="email"
-                    label="Email"
-                    placeholder="Enter your email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    disabled={loading}
+    <>
+        <div className='min-h-screen w-full grid grid-cols-1 lg:grid-cols-2 bg-card'>
+            
+
+            <div className="hidden lg:block relative w-full h-screen">
+                <Image 
+                    src="/images/sun.png"
+                    alt="space background"
+                    fill
+                    className="object-cover object-center"
                 />
+            </div>
 
-                <Input
-                    id="password"
-                    label="Password"
-                    placeholder="Enter your password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    disabled={loading}
-                />
 
-                {/* Show error message from URL if present */}
-                {displayError && (
-                    <div 
-                        role="alert"
-                        aria-live="polite"
-                        tabIndex={-1}
-                        className="p-3 text-sm text-red-800 bg-red-100 rounded"
-                    >
-                        {displayError}
-                    </div>
-                )}
 
-                <Button
-                    type="submit"
-                    disabled={loading}
-                    loading={loading}
-                    variant="primary"
-                    size="large"
-                >
-                    {loading ? 'Signing in...' : 'Sign In'}
-                </Button>
-            </form>
+            <div className="flex flex-col justify-center px-4 py-8 bg-white sm:px-6 lg:px-8">
+            
+            </div>
 
-            <p className="text-sm text-center text-gray-600">
-                Do not have an account?{' '}
-                <a href="/register" className="text-indigo-600 hover:underline">
-                    Register
-                </a>
-            </p>
         </div>
-    </div>
+    </>
   );
 }
 
-export default function SignInPage() {
-  return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="text-gray-600">Loading...</div>
-      </div>
-    }>
-      <SignInForm />
-    </Suspense>
-  );
-}
