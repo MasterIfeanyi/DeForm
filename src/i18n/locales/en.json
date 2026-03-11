@@ -1,0 +1,11 @@
+{
+  "common": {
+    "submit": "Submit",
+    "cancel": "Cancel"
+  },
+  "form": {
+    "title": "Form Builder",
+    "create": "Create Form",
+    "name": "Form Name"
+  }
+}

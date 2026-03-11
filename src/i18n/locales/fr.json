@@ -1,0 +1,11 @@
+{
+  "common": {
+    "submit": "Soumettre",
+    "cancel": "Annuler"
+  },
+  "form": {
+    "title": "Constructeur de formulaire",
+    "create": "Créer un formulaire",
+    "name": "Nom du formulaire"
+  }
+}

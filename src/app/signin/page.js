@@ -7,9 +7,12 @@ import { Suspense } from 'react';
 import { Input, Button } from '@/components/ui';
 import Link from 'next/link';
 import Image from "next/image";
+import { useTranslation } from "@/hooks/useTranslation"
 
 
 export default function SignInForm () {
+
+  const { t } = useTranslation()
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -75,7 +78,6 @@ export default function SignInForm () {
             </div>
 
 
-
             <div className="flex flex-col justify-center items-center px-4 py-8 bg-white sm:px-6 lg:px-8">
                 <div className="w-full max-w-md">
                     {/* Header */}
@@ -115,7 +117,8 @@ export default function SignInForm () {
                             loading={loading}
                             className="!h-12 !rounded-xl !bg-blue-600 hover:!bg-blue-700 !font-bold !text-lg"
                         >
-                            Log in
+                            {/* Log in */}
+                            {t("form.create")}
                         </Button>
 
                         {/* Forgotten Password Link */}
