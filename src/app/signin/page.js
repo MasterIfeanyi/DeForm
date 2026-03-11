@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { Suspense } from 'react';
 import { Input, Button } from '@/components/ui';
-import Link from 'next/link';
 import Image from "next/image";
 import { useTranslation } from "@/hooks/useTranslation"
 
@@ -82,7 +81,7 @@ export default function SignInForm () {
                 <div className="w-full max-w-md">
                     {/* Header */}
                     <h1 className="text-3xl font-bold text-foreground mb-8">
-                        Log in
+                        {t("auth.signIn.title")}
                     </h1>
 
                     {/* Form */}
@@ -93,7 +92,7 @@ export default function SignInForm () {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Email address or mobile number"
+                            placeholder={t("auth.signIn.emailPlaceholder")}
                             required
                             className="!mt-0 !h-14 !rounded-xl !border-gray-300 !text-base placeholder:text-muted-foreground"
                         />
@@ -104,7 +103,7 @@ export default function SignInForm () {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Password"
+                            placeholder={t("auth.signIn.passwordPlaceholder")}
                             required
                             className="!mt-0 !h-14 !rounded-xl !border-gray-300 !text-base placeholder:text-muted-foreground"
                         />
@@ -117,8 +116,7 @@ export default function SignInForm () {
                             loading={loading}
                             className="!h-12 !rounded-xl !bg-blue-600 hover:!bg-blue-700 !font-bold !text-lg"
                         >
-                            {/* Log in */}
-                            {t("form.create")}
+                            {t("auth.signIn.title")}
                         </Button>
 
                         {/* Forgotten Password Link */}
@@ -126,7 +124,7 @@ export default function SignInForm () {
                             <a href="#"
                                 className="text-primary hover:underline text-sm font-medium"
                             >
-                                Forgotten password?
+                                {t("auth.signIn.forgotPassword")}
                             </a>
                         </div>
 
@@ -140,7 +138,7 @@ export default function SignInForm () {
                                 variant="other"
                                 className="!h-12 !rounded-xl !border-2 !border-primary !text-primary hover:!bg-accent !font-semibold !px-8"
                             >
-                                Create new account
+                                {t("auth.signIn.createAccount")}
                             </Button>
                         </div>
 

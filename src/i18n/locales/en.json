@@ -7,5 +7,15 @@
     "title": "Form Builder",
     "create": "Create Form",
     "name": "Form Name"
+  },
+  "auth": {
+    "signIn": {
+      "title": "Log in",
+      "emailPlaceholder": "Email address or mobile number",
+      "passwordPlaceholder": "Password",
+      "loginButton": "Log in",
+      "forgotPassword": "Forgotten password?",
+      "createAccount": "Create new account"
+    }
   }
 }
