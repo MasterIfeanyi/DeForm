@@ -47,7 +47,7 @@ const Input = ({
         {...rest}
         className={clsx(
           "w-full px-4 py-2 h-10 text-sm font-light mt-2 bg-white border rounded outline-none transition disabled:opacity-70 disabled:cursor-not-allowed border-grey focus:border-primary",
-          icon && "pr-12",
+          icon && "pr-10",
           className
         )}
       />
