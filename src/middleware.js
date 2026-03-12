@@ -19,7 +19,7 @@ export async function middleware(request) {
   }
 
   // Protected route logic...
-  const protectedPaths = ['/playground', '/getting-started', '/builder'];
+  const protectedPaths = ['/playground', '/getting-started'];
   const isProtected = protectedPaths.some((path) => pathname.startsWith(path));
 
   if (isProtected && !token) {

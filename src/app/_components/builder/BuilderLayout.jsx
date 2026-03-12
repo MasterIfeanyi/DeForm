@@ -1,7 +1,7 @@
 'use client';
 
 import { DndContext, DragOverlay, closestCenter } from '@dnd-kit/core';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import FieldsSidebar from './FieldsSidebar';
 import FormCanvas from './FormCanvas';
 import LivePreview from './LivePreview';
@@ -10,11 +10,11 @@ import { FIELD_TYPES } from '@/lib/builder/fieldRegistry';
 export default function BuilderLayout({ builderState, formId }) {
   const [activeId, setActiveId] = useState(null);
 
-  function handleDragStart(event) {
+  const handleDragStart = useCallback((event) => {
     setActiveId(event.active.id);
-  }
+  }, []);
 
-  function handleDragEnd(event) {
+  const handleDragEnd = useCallback((event) => {
     const { active, over } = event;
 
     if (!over) {
@@ -36,11 +36,20 @@ export default function BuilderLayout({ builderState, formId }) {
       const newIndex = builderState.fields.findIndex(
         (f) => `field-${f.id}` === over.id
       );
-      builderState.reorderFields(oldIndex, newIndex);
+      
+      if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
+        builderState.reorderFields(oldIndex, newIndex);
+      }
     }
 
     setActiveId(null);
-  }
+  }, [builderState]);
+
+  console.log('BuilderLayout render', builderState.fields.length);
+
+  const activeField = activeId?.startsWith('sidebar-') 
+    ? FIELD_TYPES[activeId.replace('sidebar-', '')] 
+    : null;
 
   return (
     <DndContext
@@ -60,10 +69,9 @@ export default function BuilderLayout({ builderState, formId }) {
 
         {/* Drag Overlay */}
         <DragOverlay>
-          {activeId && activeId.startsWith('sidebar-') ? (
+          {activeField ? (
             <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-blue-500">
-              {FIELD_TYPES[activeId.replace('sidebar-', '')]?.icon}{' '}
-              {FIELD_TYPES[activeId.replace('sidebar-', '')]?.label}
+              {activeField.icon} {activeField.label}
             </div>
           ) : null}
         </DragOverlay>

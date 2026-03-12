@@ -52,8 +52,10 @@ const Input = ({
         )}
       />
       {icon && imgSrc && (
-        <Image 
+        <img 
           src={imgSrc} 
+          width={24}
+          height={24}
           alt="icon" 
           className={clsx(
             "absolute right-3 bottom-2 w-6 h-6",

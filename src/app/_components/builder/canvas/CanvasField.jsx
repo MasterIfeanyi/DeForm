@@ -41,7 +41,7 @@ export default function CanvasField({
         ${isSelected ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200'}
         hover:border-blue-300 transition-all cursor-pointer
       `}
-      onClick={onSelect}
+      onClick={() => onSelect(field.id)}
     >
       {/* Drag Handle */}
       <div
@@ -55,68 +55,68 @@ export default function CanvasField({
       {/* Field Content */}
       <div className="pl-6">
         <div className="flex items-start justify-between gap-4">
-          <div className="flex-1">
-            <div className="flex items-center gap-2 mb-2">
-                <Input
-                    type="text"
-                    value={field.config.label}
-                    onChange={(e) => onUpdate({ label: e.target.value })}
-                    onClick={(e) => e.stopPropagation()}
-                    icon={true}
-                    imgSrc={fieldType.icon} // 📝, 📧, 📞
-                    className="flex-1 font-medium text-gray-900 bg-transparent border-b border-transparent hover:border-gray-300 focus:border-blue-500 focus:outline-none px-1 py-0.5"
-                />
+            <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                    <Input
+                        type="text"
+                        value={field.config.label}
+                        onChange={(e) => onUpdate({ label: e.target.value })}
+                        onClick={(e) => e.stopPropagation()}
+                        icon={true}
+                        imgSrc={fieldType.icon}
+                        className="flex-1 font-medium text-gray-900 bg-transparent border-b border-transparent hover:border-gray-300 focus:border-blue-500 focus:outline-none px-1 py-0.5"
+                    />
+                </div>
+
+                {/* Field Preview based on type */}
+                {['SHORT_TEXT', 'EMAIL', 'PHONE'].includes(field.type) && (
+                    <Input
+                        type={field.type === 'EMAIL' ? 'email' : 'text'}
+                        placeholder={field.config.placeholder}
+                        value={field.config.placeholder}
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={(e) => onUpdate({ placeholder: e.target.value })}
+                        className="w-full text-sm border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                    />
+                )}
             </div>
 
-            {/* Field Preview based on type */}
-            {['SHORT_TEXT', 'EMAIL', 'PHONE'].includes(field.type) && (
-              <Input
-                type={field.type === 'EMAIL' ? 'email' : 'text'}
-                placeholder={field.config.placeholder}
-                value={field.config.placeholder}
-                onClick={(e) => e.stopPropagation()}
-                onChange={(e) => onUpdate({ placeholder: e.target.value })}
-                className="w-full text-sm border border-gray-300 focus:ring-2 focus:ring-blue-500"
-            />
-            )}
-          </div>
-
-          {/* Actions */}
-          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onDuplicate();
-              }}
-              className="p-1.5 hover:bg-gray-100 rounded"
-              title="Duplicate"
-            >
-              <FiCopy className="w-4 h-4 text-gray-600" />
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onRemove();
-              }}
-              className="p-1.5 hover:bg-red-50 rounded"
-              title="Delete"
-            >
-              <FiTrash2 className="w-4 h-4 text-red-600" />
-            </button>
-          </div>
+            {/* Actions */}
+            <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onDuplicate(field.id);
+                    }}
+                    className="p-1.5 hover:bg-gray-100 rounded"
+                    title="Duplicate"
+                >
+                    <FiCopy className="w-4 h-4 text-gray-600" />
+                </button>
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onRemove(field.id);
+                    }}
+                    className="p-1.5 hover:bg-red-50 rounded"
+                    title="Delete"
+                >
+                    <FiTrash2 className="w-4 h-4 text-red-600" />
+                </button>
+            </div>
         </div>
 
-        <Checkbox
-            label="Required"
-            checked={field.config.required}
-            disabled={false}
-            onChange={(e) => {
-                e.stopPropagation(); // prevents triggering parent onClick
-                onUpdate({ required: e.target.checked });
-            }}
-            className="mt-3 text-sm text-gray-600"
-        />
-      </div>
+            <Checkbox
+                label="Required"
+                checked={field.config.required}
+                disabled={false}
+                onChange={(e) => {
+                    e.stopPropagation(); // prevents triggering parent onClick
+                    onUpdate({ required: e.target.checked });
+                }}
+                className="mt-3 text-sm text-gray-600"
+            />
+        </div>
     </div>
   );
 }

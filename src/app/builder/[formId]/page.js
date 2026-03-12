@@ -1,15 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
-import BuilderLayout from '@/components/builder/BuilderLayout';
+import BuilderLayout from '@/app/_components/builder/BuilderLayout';
 import { useFormBuilder } from '@/hooks/useFormBuilder';
+import FormBuilder from '@/app/_components/FormBuilder';
 
 export default function FormBuilderPage() {
   const params = useParams();
   const formId = params.formId;
   const [loading, setLoading] = useState(true);
 
+  const initialFields = useMemo(() => [], []);
   const builderState = useFormBuilder([]);
 
   // Load form data
@@ -36,5 +38,6 @@ export default function FormBuilderPage() {
     );
   }
 
-  return <BuilderLayout builderState={builderState} formId={formId} />;
+  // return <BuilderLayout builderState={builderState} formId={formId} />;
+  return <FormBuilder />
 }

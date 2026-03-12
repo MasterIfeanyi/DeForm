@@ -1,127 +1,126 @@
-export const FIELD_TYPES = {
-  SHORT_TEXT: {
-    id: 'SHORT_TEXT',
-    label: 'Short Text',
-    icon: '📝',
-    category: 'text',
+export const FIELD_TYPES = [
+  {
+    id: "SHORT_TEXT",
+    label: "Short Text",
+    icon: "text",
+    category: "text",
     defaultConfig: {
-      label: 'Untitled Question',
-      placeholder: 'Type your answer here...',
+      label: "Untitled Question",
+      placeholder: "Type your answer here...",
       required: false,
-      maxLength: 100,
+      maxLength: 100
     },
     validation: {
-      rules: ['required', 'minLength', 'maxLength', 'pattern'],
-    },
+      rules: ["required", "minLength", "maxLength", "pattern"]
+    }
   },
-  EMAIL: {
-    id: 'EMAIL',
-    label: 'Email',
-    icon: '📧',
-    category: 'text',
+  {
+    id: "EMAIL",
+    label: "Email",
+    icon: "email",
+    category: "text",
     defaultConfig: {
-      label: 'Email Address',
-      placeholder: 'example@email.com',
-      required: true,
+      label: "Email Address",
+      placeholder: "example@email.com",
+      required: true
     },
     validation: {
-      rules: ['required', 'email'],
-      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-    },
+      rules: ["required", "email"],
+      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    }
   },
-  PHONE: {
-    id: 'PHONE',
-    label: 'Phone Number',
-    icon: '📞',
-    category: 'text',
+  {
+    id: "PHONE",
+    label: "Phone Number",
+    icon: "phone",
+    category: "text",
     defaultConfig: {
-      label: 'Phone Number',
-      placeholder: '+1 (555) 000-0000',
-      required: false,
+      label: "Phone Number",
+      placeholder: "+1 (555) 000-0000",
+      required: false
     },
     validation: {
-      rules: ['required', 'phone'],
-    },
+      rules: ["required", "phone"]
+    }
   },
-  NUMBER: {
-    id: 'NUMBER',
-    label: 'Number',
-    icon: '🔢',
-    category: 'number',
+  {
+    id: "NUMBER",
+    label: "Number",
+    icon: "number",
+    category: "number",
     defaultConfig: {
-      label: 'Number',
-      placeholder: '0',
+      label: "Number",
+      placeholder: "0",
       required: false,
       min: null,
-      max: null,
+      max: null
     },
     validation: {
-      rules: ['required', 'min', 'max'],
-    },
+      rules: ["required", "min", "max"]
+    }
   },
-  DATE: {
-    id: 'DATE',
-    label: 'Date',
-    icon: '📅',
-    category: 'date',
+  {
+    id: "DATE",
+    label: "Date",
+    icon: "date",
+    category: "date",
     defaultConfig: {
-      label: 'Date',
+      label: "Date",
       required: false,
       minDate: null,
-      maxDate: null,
+      maxDate: null
     },
     validation: {
-      rules: ['required', 'minDate', 'maxDate'],
-    },
+      rules: ["required", "minDate", "maxDate"]
+    }
   },
-  FILE_UPLOAD: {
-    id: 'FILE_UPLOAD',
-    label: 'File Upload',
-    icon: '📁',
-    category: 'file',
+  {
+    id: "FILE_UPLOAD",
+    label: "File Upload",
+    icon: "upload",
+    category: "file",
     defaultConfig: {
-      label: 'Upload File',
+      label: "Upload File",
       required: false,
-      maxSize: 5, // MB
-      allowedTypes: ['image/*', 'application/pdf'],
+      maxSize: 5,
+      allowedTypes: ["image/*", "application/pdf"]
     },
     validation: {
-      rules: ['required', 'fileSize', 'fileType'],
-    },
+      rules: ["required", "fileSize", "fileType"]
+    }
   },
-  RATING: {
-    id: 'RATING',
-    label: 'Rating',
-    icon: '⭐',
-    category: 'choice',
+  {
+    id: "RATING",
+    label: "Rating",
+    icon: "star",
+    category: "choice",
     defaultConfig: {
-      label: 'Rate your experience',
+      label: "Rate your experience",
       required: false,
       max: 5,
-      icon: 'star',
+      icon: "star"
     },
     validation: {
-      rules: ['required'],
-    },
+      rules: ["required"]
+    }
   },
-  CHECKBOX: {
-    id: 'CHECKBOX',
-    label: 'Checkbox',
-    icon: '☑️',
-    category: 'choice',
+  {
+    id: "CHECKBOX",
+    label: "Checkbox",
+    icon: "checkbox",
+    category: "choice",
     defaultConfig: {
-      label: 'Select options',
+      label: "Select options",
       required: false,
-      options: ['Option 1', 'Option 2'],
+      options: ["Option 1", "Option 2"],
       minSelect: null,
-      maxSelect: null,
+      maxSelect: null
     },
     validation: {
-      rules: ['required', 'minSelect', 'maxSelect'],
-    },
-  },
-};
-
+      rules: ["required", "minSelect", "maxSelect"]
+    }
+  }
+];
 export const getFieldTypeById = (id) => FIELD_TYPES[id];
 
 export const getAllFieldTypes = () => Object.values(FIELD_TYPES);
@@ -131,3 +130,22 @@ export const getFieldTypesByCategory = (category) => {
     (field) => field.category === category
   );
 };
+
+export const FIELD_TYPES_MAP = Object.fromEntries(
+  FIELD_TYPES.map(field => [field.id, field])
+);
+
+// export const FIELD_TYPES = [
+//   { id: 'text', label: 'Text Input', icon: '📝' },
+//   { id: 'email', label: 'Email', icon: '✉️' },
+//   { id: 'number', label: 'Number', icon: '🔢' },
+//   { id: 'tel', label: 'Phone', icon: '📞' },
+//   { id: 'url', label: 'URL', icon: '🔗' },
+//   { id: 'textarea', label: 'Long Text', icon: '📄' },
+//   { id: 'radio', label: 'Single Choice', icon: '⚪' },
+//   { id: 'checkbox', label: 'Multiple Choice', icon: '☑️' },
+//   { id: 'select', label: 'Dropdown', icon: '📋' },
+//   { id: 'file', label: 'File Upload', icon: '📎' },
+//   { id: 'date', label: 'Date', icon: '📅' },
+//   { id: 'time', label: 'Time', icon: '⏰' }
+// ];

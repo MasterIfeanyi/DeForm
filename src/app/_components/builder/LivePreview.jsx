@@ -1,7 +1,95 @@
 'use client';
+import React from "react";
 import { Input, TextArea, Checkbox, FieldLabel } from "@/components/ui";
+import { useDeferredValue } from 'react';
 
-export default function LivePreview({ fields }) {
+// This is a separate component that renders ONE field (used by the List)
+const FieldRow = ({ field }) => {
+
+    // const field = data[index];
+
+    if (!field || !field.config) {
+        return <div></div>;
+    };
+
+
+    return (
+        <div key={field.id} className="space-y-2">
+            <FieldLabel
+                label={field.config.label}
+                required={field.config.required}
+                htmlFor={field.id}
+            />
+
+            {/* Render appropriate input based on field type */}
+            {['EMAIL', 'PHONE'].includes(field.type) && (
+                <Input
+                    type={field.type === 'EMAIL' ? 'email' : 'text'}
+                    placeholder={field.config.placeholder}
+                    disabled={true}
+                    className="px-3 py-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                />
+            )}
+
+            {field.type === 'NUMBER' && (
+                <Input
+                    type="number"
+                    placeholder={field.config.placeholder}
+                    disabled
+                    className="px-3 py-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                />
+            )}
+
+            {field.type === 'SHORT_TEXT' && (
+                <Input
+                    type="text"
+                    placeholder={field.config.placeholder}
+                    disabled
+                    className="px-3 py-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                />
+            )}
+
+            {field.type === 'TEXTAREA' && (
+                <TextArea
+                    id={field.id}
+                    value=""
+                    onChange={() => {}}
+                    placeholder={field.config.placeholder}
+                    rows={3}
+                    disabled
+                />
+            )}
+
+            {field.type === 'DATE' && (
+                <Input
+                    type="date"
+                    disabled
+                    className="border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                />
+            )}
+
+            {field.type === 'CHECKBOX' && Array.isArray(field.config.options) && (
+                <div className="space-y-2">
+                    {field.config.options.map((option, idx) => (
+                        <Checkbox
+                            key={idx}
+                            label={option}
+                            disabled
+                            checked={false}
+                        />
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+};
+
+const LivePreview = ({ fields}) => {
+
+    const safeFields = (fields || []).filter(Boolean);
+
+    const deferredFields = useDeferredValue(safeFields);
+
     return (
         <aside className="w-96 bg-gray-100 border-l border-gray-200 p-6 overflow-y-auto">
             <div className="mb-4">
@@ -10,85 +98,18 @@ export default function LivePreview({ fields }) {
             </div>
 
             <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-                
-                {fields.length === 0 ? (
+                {deferredFields.length === 0 ? (
                     <p className="text-gray-400 text-center py-8">Add fields to see preview</p>
                 ) : (
-                    <div className="space-y-4">
-                        {fields.map((field) => (
-                            <div key={field.id} className="space-y-2">
-                                <FieldLabel
-                                    label={field.config.label}
-                                    required={field.config.required}
-                                    htmlFor={field.id}
-                                />
-                                
-                                {/* Render appropriate input based on field type */}
-                                {['EMAIL', 'PHONE'].includes(field.type) && (
-                                    <Input
-                                        type={field.type === 'EMAIL' ? 'email' : 'text'}
-                                        placeholder={field.config.placeholder}
-                                        disabled={true}
-                                        className="px-3 py-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                                    />
-                                )}
-                            
-                                {field.type === 'NUMBER' && (
-                                <Input
-                                        type="number"
-                                        placeholder={field.config.placeholder}
-                                        disabled
-                                        className="px-3 py-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                                    />
-                                )}
-
-                                {field.type === 'SHORT_TEXT' && (
-                                    <Input
-                                        type="text"
-                                        placeholder={field.config.placeholder}
-                                        disabled
-                                        className="px-3 py-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                                    />
-                                )}
-
-                                {field.type === 'TEXTAREA' && (
-                                    <TextArea
-                                        id={field.id}
-                                        value=""
-                                        onChange={() => {}}
-                                        placeholder={field.config.placeholder}
-                                        rows={3}
-                                        disabled
-                                    />
-                                )}
-                            
-                            
-                                {field.type === 'DATE' && (
-                                    <Input
-                                        type="date"
-                                        disabled
-                                        className="border border-gray-300 focus:ring-2 focus:ring-blue-500"
-                                    />
-                                )}
-                            
-                                {field.type === 'CHECKBOX' && (
-                                    <div className="space-y-2">
-                                        {field.config.options.map((option, idx) => (
-                                            <Checkbox
-                                                key={idx}
-                                                label={option}
-                                                disabled
-                                                checked={false}
-                                            />
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
+                    <div className="space-y-6">
+                        {deferredFields.map((field) => (
+                            <FieldRow key={field.id} field={field} />
                         ))}
                     </div>
                 )}
             </div>
         </aside>
     );
-}
+};
 
+export default React.memo(LivePreview);
