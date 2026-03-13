@@ -1,13 +1,13 @@
 export const FIELD_TYPES = [
   {
     id: "text",
-    label: "Short Text",
+    label: "fieldTypes.text",
     icon: "text",
     category: "text",
     defaultConfig: {
-      label: "Untitled Question",
-      placeholder: "Type your answer here...",
-      required: false,
+      label: "fields.default.text.label",
+      placeholder: "fields.default.text.placeholder",
+      required: false,  
       maxLength: 100
     },
     validation: {
@@ -16,12 +16,12 @@ export const FIELD_TYPES = [
   },
   {
     id: "email",
-    label: "Email",
+    label: "fieldTypes.email",
     icon: "email",
     category: "text",
     defaultConfig: {
-      label: "Email Address",
-      placeholder: "example@email.com",
+      label: "fields.default.email.label",
+      placeholder: "fields.default.email.placeholder",
       required: true
     },
     validation: {
@@ -31,12 +31,12 @@ export const FIELD_TYPES = [
   },
   {
     id: "tel",
-    label: "Phone Number",
+    label: "fieldTypes.tel",
     icon: "phone",
     category: "text",
     defaultConfig: {
-      label: "Phone Number",
-      placeholder: "+1 (555) 000-0000",
+      label: "fields.default.tel.label",
+      placeholder: "fields.default.tel.placeholder",
       required: false
     },
     validation: {
@@ -45,12 +45,12 @@ export const FIELD_TYPES = [
   },
   {
     id: "number",
-    label: "Number",
+    label: "fieldTypes.number",
     icon: "number",
     category: "number",
     defaultConfig: {
-      label: "Number",
-      placeholder: "0",
+      label: "fields.default.number.label",
+      placeholder: "fields.default.number.placeholder",
       required: false,
       min: null,
       max: null
@@ -61,11 +61,11 @@ export const FIELD_TYPES = [
   },
   {
     id: "date",
-    label: "Date",
+    label: "fieldTypes.date",
     icon: "date",
     category: "date",
     defaultConfig: {
-      label: "Date",
+      label: "fields.default.date.label",
       required: false,
       minDate: null,
       maxDate: null
@@ -76,11 +76,11 @@ export const FIELD_TYPES = [
   },
   {
     id: "file",
-    label: "File Upload",
+    label: "fieldTypes.file",
     icon: "file",
     category: "file",
     defaultConfig: {
-      label: "Upload File",
+      label: "fields.default.file.label",
       required: false,
       maxSize: 5,
       allowedTypes: ["image/*", "application/pdf"]
@@ -91,11 +91,11 @@ export const FIELD_TYPES = [
   },
   {
     id: "RATING",
-    label: "Rating",
+    label: "fieldTypes.rating",
     icon: "star",
     category: "choice",
     defaultConfig: {
-      label: "Rate your experience",
+      label: "fields.default.rating.label",
       required: false,
       max: 5,
       icon: "star"
@@ -106,11 +106,11 @@ export const FIELD_TYPES = [
   },
   {
     id: "checkbox",
-    label: "Checkbox",
+    label: "fieldTypes.checkbox",
     icon: "checkbox",
     category: "choice",
     defaultConfig: {
-      label: "Select options",
+      label:  "fields.default.checkbox.label",
       required: false,
       options: ["Option 1", "Option 2"],
       minSelect: null,
@@ -121,32 +121,18 @@ export const FIELD_TYPES = [
     }
   }
 ];
-export const getFieldTypeById = (id) => FIELD_TYPES[id];
-
-export const getAllFieldTypes = () => Object.values(FIELD_TYPES);
-
-export const getFieldTypesByCategory = (category) => {
-  return Object.values(FIELD_TYPES).filter(
-    (field) => field.category === category
-  );
-};
 
 
 
-// export const FIELD_TYPES = [
-//   { id: 'text', label: 'Text Input', icon: '📝' },
-//   { id: 'email', label: 'Email', icon: '✉️' },
-//   { id: 'number', label: 'Number', icon: '🔢' },
-//   { id: 'tel', label: 'Phone', icon: '📞' },
-//   { id: 'url', label: 'URL', icon: '🔗' },
-//   { id: 'textarea', label: 'Long Text', icon: '📄' },
-//   { id: 'radio', label: 'Single Choice', icon: '⚪' },
-//   { id: 'checkbox', label: 'Multiple Choice', icon: '☑️' },
-//   { id: 'select', label: 'Dropdown', icon: '📋' },
-//   { id: 'file', label: 'File Upload', icon: '📎' },
-//   { id: 'date', label: 'Date', icon: '📅' },
-//   { id: 'time', label: 'Time', icon: '⏰' }
-// ];
+export const getAllFieldTypes = () => FIELD_TYPES;
+
+export const getFieldTypesByCategory = (category) =>
+  FIELD_TYPES.filter(field => field.category === category);
+
+
+export const getFieldTypeById = (id) =>
+  FIELD_TYPES.find(field => field.id === id);
+
 
 export const FIELD_TYPES_MAP = Object.fromEntries(
   FIELD_TYPES.map(field => [field.id, field])
