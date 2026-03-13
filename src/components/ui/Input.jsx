@@ -47,13 +47,15 @@ const Input = ({
         {...rest}
         className={clsx(
           "w-full px-4 py-2 h-10 text-sm font-light mt-2 bg-white border rounded outline-none transition disabled:opacity-70 disabled:cursor-not-allowed border-grey focus:border-primary",
-          icon && "pr-12",
+          icon && "pr-10",
           className
         )}
       />
       {icon && imgSrc && (
-        <Image 
+        <img 
           src={imgSrc} 
+          width={24}
+          height={24}
           alt="icon" 
           className={clsx(
             "absolute right-3 bottom-2 w-6 h-6",

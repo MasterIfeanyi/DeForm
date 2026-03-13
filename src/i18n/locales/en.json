@@ -1,0 +1,37 @@
+{
+  "common": {
+    "submit": "Submit",
+    "cancel": "Cancel"
+  },
+  "form": {
+    "title": "Form Builder",
+    "create": "Create Form",
+    "name": "Form Name"
+  },
+  "auth": {
+    "signIn": {
+      "title": "Log in",
+      "emailPlaceholder": "Email address or mobile number",
+      "passwordPlaceholder": "Password",
+      "loginButton": "Log in",
+      "forgotPassword": "Forgotten password?",
+      "createAccount": "Create new account"
+    }
+  },
+  "landing": {
+    "nav": {
+      "logIn": "Log In",
+      "signUp": "Sign Up"
+    },
+    "hero": {
+      "title": "Create Forms in Seconds.",
+      "titleHighlight": "Share Instantly.",
+      "description": "Build beautiful forms, collect responses, and analyze results. No coding required. Open source and free forever.",
+      "ctaPrimary": "Start Building Free",
+      "ctaSecondary": "Learn More"
+    },
+    "footer": {
+      "copyright": "© 2026 DeForm. Open Source & Free Forever."
+    }
+  }
+}

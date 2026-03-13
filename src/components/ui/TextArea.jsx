@@ -66,7 +66,7 @@ TextArea.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string,
   value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   label: PropTypes.string,
   disabled: PropTypes.bool,
   required: PropTypes.bool,
