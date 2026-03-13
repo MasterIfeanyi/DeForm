@@ -1,6 +1,6 @@
 export const FIELD_TYPES = [
   {
-    id: "SHORT_TEXT",
+    id: "text",
     label: "Short Text",
     icon: "text",
     category: "text",
@@ -15,7 +15,7 @@ export const FIELD_TYPES = [
     }
   },
   {
-    id: "EMAIL",
+    id: "email",
     label: "Email",
     icon: "email",
     category: "text",
@@ -30,7 +30,7 @@ export const FIELD_TYPES = [
     }
   },
   {
-    id: "PHONE",
+    id: "tel",
     label: "Phone Number",
     icon: "phone",
     category: "text",
@@ -44,7 +44,7 @@ export const FIELD_TYPES = [
     }
   },
   {
-    id: "NUMBER",
+    id: "number",
     label: "Number",
     icon: "number",
     category: "number",
@@ -60,7 +60,7 @@ export const FIELD_TYPES = [
     }
   },
   {
-    id: "DATE",
+    id: "date",
     label: "Date",
     icon: "date",
     category: "date",
@@ -75,9 +75,9 @@ export const FIELD_TYPES = [
     }
   },
   {
-    id: "FILE_UPLOAD",
+    id: "file",
     label: "File Upload",
-    icon: "upload",
+    icon: "file",
     category: "file",
     defaultConfig: {
       label: "Upload File",
@@ -105,7 +105,7 @@ export const FIELD_TYPES = [
     }
   },
   {
-    id: "CHECKBOX",
+    id: "checkbox",
     label: "Checkbox",
     icon: "checkbox",
     category: "choice",
@@ -131,9 +131,7 @@ export const getFieldTypesByCategory = (category) => {
   );
 };
 
-export const FIELD_TYPES_MAP = Object.fromEntries(
-  FIELD_TYPES.map(field => [field.id, field])
-);
+
 
 // export const FIELD_TYPES = [
 //   { id: 'text', label: 'Text Input', icon: '📝' },
@@ -149,3 +147,7 @@ export const FIELD_TYPES_MAP = Object.fromEntries(
 //   { id: 'date', label: 'Date', icon: '📅' },
 //   { id: 'time', label: 'Time', icon: '⏰' }
 // ];
+
+export const FIELD_TYPES_MAP = Object.fromEntries(
+  FIELD_TYPES.map(field => [field.id, field])
+);
