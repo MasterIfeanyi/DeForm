@@ -3,6 +3,7 @@
 import React, { useState, useCallback } from 'react';
 import { AiOutlineCopy, AiOutlineDownload } from 'react-icons/ai';
 import clsx from 'clsx';
+import { useTranslation } from "@/hooks/useTranslation";
 
 // import { FIELD_TYPES } from '../../constants/fieldTypes';
 import { FIELD_TYPES } from '@/lib/builder/fieldRegistry';
@@ -14,6 +15,10 @@ import { FieldEditor } from './FieldEditor';
 import { LivePreviewField } from './LivePreviewField';
 
 export default function FormBuilder() {
+
+
+  const {t} = useTranslation()
+
   const [formTitle, setFormTitle] = useState('');
   const [formDescription, setFormDescription] = useState('');
   const [fields, setFields] = useState([]);
@@ -64,8 +69,8 @@ export default function FormBuilder() {
         <div className="max-w-450 mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-bold tracking-tight">DeForm Builder</h1>
-              <p className="text-xs text-neutral-500 mt-0.5">Production-grade form creator</p>
+              <h1 className="text-xl font-bold tracking-tight">{t("builder.name")}</h1>
+              <p className="text-xs text-neutral-500 mt-0.5">{t("builder.tagline")}</p>
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -77,7 +82,7 @@ export default function FormBuilder() {
                 )}
               >
                 <AiOutlineCopy size={16} />
-                Copy HTML
+                {t("builder.actions.copyHtml")}
               </button>
               <button
                 onClick={exportHTML}
@@ -88,7 +93,7 @@ export default function FormBuilder() {
                 )}
               >
                 <AiOutlineDownload size={16} />
-                Export
+                {t("builder.actions.export")}
               </button>
             </div>
           </div>
@@ -102,8 +107,8 @@ export default function FormBuilder() {
           {/* Column 1: Field Types (Left) */}
           <div className="col-span-2 border-r border-neutral-800 bg-neutral-950/50 p-4 overflow-y-auto">
             <div className="mb-4">
-              <h2 className="text-sm font-semibold mb-1 text-neutral-300 uppercase tracking-wide">Field Types</h2>
-              <p className="text-xs text-neutral-500">Click to add to canvas</p>
+              <h2 className="text-sm font-semibold mb-1 text-neutral-300 uppercase tracking-wide">{t("builder.fieldTypes.title")}</h2>
+              <p className="text-xs text-neutral-500">{t("builder.fieldTypes.description")}</p>
             </div>
             
             <div className="space-y-1.5">
@@ -117,11 +122,11 @@ export default function FormBuilder() {
           <div className="col-span-5 border-r border-neutral-800 overflow-y-auto">
             <div className="p-6">
               <div className="mb-6">
-                <h2 className="text-lg font-semibold mb-4">Form Settings</h2>
+                <h2 className="text-lg font-semibold mb-4">{t("builder.settings.title")}</h2>
                 
                 <div className="space-y-4 mb-6">
                   <div>
-                    <label className="block text-sm font-medium mb-2 text-neutral-300">Form Title</label>
+                    <label className="block text-sm font-medium mb-2 text-neutral-300">{t("builder.settings.formTitle")}</label>
                     <input
                       type="text"
                       value={formTitle}
@@ -132,11 +137,11 @@ export default function FormBuilder() {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium mb-2 text-neutral-300">Description</label>
+                    <label className="block text-sm font-medium mb-2 text-neutral-300">{t("builder.settings.description")}</label>
                     <textarea
                       value={formDescription}
                       onChange={(e) => setFormDescription(e.target.value)}
-                      placeholder="Brief description of your form"
+                      placeholder={t("builder.settings.descriptionPlaceholder")}
                       rows={3}
                       className="w-full px-4 py-2.5 bg-neutral-900 border border-neutral-700 focus:border-blue-500 rounded-lg text-white placeholder-neutral-500 focus:outline-none resize-none transition-colors"
                     />
@@ -146,14 +151,14 @@ export default function FormBuilder() {
 
               <div className="border-t border-neutral-800 pt-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold">Form Fields</h2>
+                  <h2 className="text-lg font-semibold">{t("builder.canvas.title")}</h2>
                   <span className="text-xs text-neutral-500">{fields.length} field{fields.length !== 1 ? 's' : ''}</span>
                 </div>
                 
                 {fields.length === 0 ? (
                   <div className="text-center py-16 text-neutral-500">
-                    <p className="mb-2">No fields added yet</p>
-                    <p className="text-sm">Click a field type on the left to add it</p>
+                    <p className="mb-2">{t("builder.canvas.emptyTitle")}</p>
+                    <p className="text-sm">{t("builder.canvas.emptyDescription")}</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -176,8 +181,8 @@ export default function FormBuilder() {
             <div className="p-6">
               <div className="mb-6 flex items-center justify-between">
                 <div>
-                  <h2 className="text-lg font-semibold">Live Preview</h2>
-                  <p className="text-xs text-neutral-500 mt-1">See your form in real-time</p>
+                  <h2 className="text-lg font-semibold">{t("builder.preview.title")}</h2>
+                  <p className="text-xs text-neutral-500 mt-1">{t("builder.preview.description")}</p>
                 </div>
               </div>
 
@@ -199,7 +204,7 @@ export default function FormBuilder() {
                   </div>
                 ) : (
                   <div className="text-center py-16 text-neutral-600">
-                    <p>Add fields to see them here</p>
+                    <p>{t("builder.preview.empty")}</p>
                   </div>
                 )}
 
@@ -208,7 +213,7 @@ export default function FormBuilder() {
                     type="button"
                     className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold text-base transition-colors"
                   >
-                    Submit
+                    {t("common.submit")}
                   </button>
                 )}
 
