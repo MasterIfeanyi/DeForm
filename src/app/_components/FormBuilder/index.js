@@ -17,7 +17,7 @@ import { LivePreviewField } from './LivePreviewField';
 export default function FormBuilder() {
 
 
-  const {t} = useTranslation()
+  const { t } = useTranslation()
 
   const [formTitle, setFormTitle] = useState('');
   const [formDescription, setFormDescription] = useState('');
@@ -103,14 +103,14 @@ export default function FormBuilder() {
       {/* 3-Column Layout */}
       <div className="max-w-450 mx-auto">
         <div className="grid grid-cols-12 gap-0 min-h-[calc(100vh-73px)]">
-          
+
           {/* Column 1: Field Types (Left) */}
           <div className="col-span-2 border-r border-neutral-800 bg-neutral-950/50 p-4 overflow-y-auto">
             <div className="mb-4">
               <h2 className="text-sm font-semibold mb-1 text-neutral-300 uppercase tracking-wide">{t("builder.fieldTypes.title")}</h2>
               <p className="text-xs text-neutral-500">{t("builder.fieldTypes.description")}</p>
             </div>
-            
+
             <div className="space-y-1.5">
               {FIELD_TYPES.map(type => (
                 <FieldTypeButton key={type.id} type={type} onClick={addField} />
@@ -123,7 +123,7 @@ export default function FormBuilder() {
             <div className="p-6">
               <div className="mb-6">
                 <h2 className="text-lg font-semibold mb-4">{t("builder.settings.title")}</h2>
-                
+
                 <div className="space-y-4 mb-6">
                   <div>
                     <label className="block text-sm font-medium mb-2 text-neutral-300">{t("builder.settings.formTitle")}</label>
@@ -135,7 +135,7 @@ export default function FormBuilder() {
                       className="w-full px-4 py-2.5 bg-neutral-900 border border-neutral-700 focus:border-blue-500 rounded-lg text-white placeholder-neutral-500 focus:outline-none transition-colors"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium mb-2 text-neutral-300">{t("builder.settings.description")}</label>
                     <textarea
@@ -154,7 +154,7 @@ export default function FormBuilder() {
                   <h2 className="text-lg font-semibold">{t("builder.canvas.title")}</h2>
                   <span className="text-xs text-neutral-500">{fields.length} field{fields.length !== 1 ? 's' : ''}</span>
                 </div>
-                
+
                 {fields.length === 0 ? (
                   <div className="text-center py-16 text-neutral-500">
                     <p className="mb-2">{t("builder.canvas.emptyTitle")}</p>
@@ -195,7 +195,7 @@ export default function FormBuilder() {
                     {formDescription || 'Your form description will appear here'}
                   </p>
                 )}
-                
+
                 {fields.length > 0 ? (
                   <div className="space-y-6 mb-6">
                     {fields.map(field => (

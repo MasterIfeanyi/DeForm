@@ -18,7 +18,7 @@ export default function FormBuilderPage() {
   useEffect(() => {
     async function loadForm() {
       try {
-        // TODO: Fetch from API
+        // todo: Fetch from API
         // const res = await fetch(`/api/forms/${formId}`);
         // const data = await res.json();
         setLoading(false);
