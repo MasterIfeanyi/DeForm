@@ -91,7 +91,7 @@ export const LivePreviewField = ({ field }) => {
                         placeholder={t(field.placeholder)}
                         value={value}
                         onChange={(e) => handleChange(field.id, e.target.value)}
-                        className="px-4 py-3 border-neutral-700 rounded-lg text-white placeholder-neutral-400 focus:border-neutral-600"
+                        className="px-4 py-3 border-neutral-700 rounded-lg text-black placeholder-neutral-400 focus:border-neutral-600"
                     />
                 );
         }
