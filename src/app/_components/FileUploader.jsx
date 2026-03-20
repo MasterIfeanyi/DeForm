@@ -104,7 +104,7 @@ export function FileUploader({ field, t, onUpload }) {
                             : t("builder.canvas.clickToUpload", "Click or drag to upload")}
                     </div>
                     <div className="text-neutral-500 text-sm">
-                        {t("builder.canvas.maxSize", "Max {{size}}", { size: maxSizeLabel })}
+                        {t("builder.canvas.maxSize", "Max size", { size: maxSizeLabel })}
                     </div>
                 </>
             )}

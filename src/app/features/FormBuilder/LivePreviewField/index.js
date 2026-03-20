@@ -1,9 +1,13 @@
 import React, { useState, useCallback, useId, useMemo, memo } from 'react';
 import { Input, TextArea, FieldLabel } from '@/components/ui';
 import { useTranslation } from "@/hooks/useTranslation";
-
+import {FileUploader} from "../../../_components/FileUploader"
 
 export const LivePreviewField = memo(({ field, onChange }) => {
+
+    const { t } = useTranslation();
+    const uniqueId = useId();
+
     const [checkboxSet, setCheckboxSet] = useState(() => {
         const initial = Array.isArray(field.value) ? field.value : [];
         return new Set(initial);
@@ -11,8 +15,6 @@ export const LivePreviewField = memo(({ field, onChange }) => {
 
     const [value, setValue] = useState(field.value || '');
 
-    const { t } = useTranslation();
-    const uniqueId = useId();
 
     const handleChange = useCallback((id, val) => {
         setValue(val);
@@ -33,6 +35,7 @@ export const LivePreviewField = memo(({ field, onChange }) => {
         });
     }, [field.id, onChange]);
 
+    
     const checkboxValue = useMemo(() => Array.from(checkboxSet), [checkboxSet]);
 
     const renderCheckboxes = useMemo(() => {
@@ -55,7 +58,7 @@ export const LivePreviewField = memo(({ field, onChange }) => {
         });
     }, [field.options, checkboxSet, handleCheckboxChange, t, field.id, uniqueId]);
 
-    const renderField = useCallback(() => {
+    const renderField = () => {
         switch (field.type) {
             case 'textarea':
                 return (
@@ -99,13 +102,7 @@ export const LivePreviewField = memo(({ field, onChange }) => {
             case 'checkbox':
                 return <div className="flex flex-col gap-3">{renderCheckboxes}</div>;
             case 'file':
-                return (
-                    <div className="border-2 border-dashed border-neutral-700 rounded-lg p-10 text-center hover:border-neutral-600 cursor-pointer transition-colors">
-                        <div className="text-3xl mb-2">📎</div>
-                        <div className="text-black mb-1">{t("builder.canvas.clickToUpload", "Click to upload")}</div>
-                        <div className="text-neutral-500 text-sm">{t("builder.canvas.maxSize", "Max {{size}}", { size: field.maxSize || '10MB' })}</div>
-                    </div>
-                );
+                return <FileUploader field={field} t={t} onChange={onChange} />
             default:
                 return (
                     <Input
@@ -118,7 +115,7 @@ export const LivePreviewField = memo(({ field, onChange }) => {
                     />
                 );
         }
-    }, [field, value, handleChange, t, renderCheckboxes, uniqueId]);
+    }
 
     return (
         <div className="mb-6">

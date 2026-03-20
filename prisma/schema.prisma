@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
+    provider = "mongodb"
     url      = env("DATABASE_URL")
 }
 
@@ -15,7 +15,7 @@ datasource db {
 // ============================================
 
 model User {
-    id            String    @id @default(cuid())
+    id            String    @id @default(auto()) @map("_id") @db.ObjectId
     email         String    @unique
     emailVerified DateTime?
     password      String
@@ -26,56 +26,57 @@ model User {
     updatedAt DateTime @updatedAt
 
     // Relations
-    accounts   Account[]
-    sessions   Session[]
-    workspaces WorkspaceMember[]
-    forms      Form[]
-    apiKeys    ApiKey[]
+    accounts           Account[]
+    sessions           Session[]
+    workspaces         WorkspaceMember[]
+    forms              Form[]
+    apiKeys            ApiKey[]
+    verificationTokens VerificationToken[]
 
-    @@index([email])
     @@map("users")
 }
 
 // NextAuth Account model
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
+    id                String  @id @default(auto()) @map("_id") @db.ObjectId
+    userId            String  @db.ObjectId
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String? @db.Text
-    access_token      String? @db.Text
+    refresh_token     String? @db.String
+    access_token      String? @db.String
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String? @db.Text
+    id_token          String? @db.String
     session_state     String?
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
-    @@index([userId])
     @@map("accounts")
 }
 
 // NextAuth Session model
 model Session {
-    id           String   @id @default(cuid())
+    id           String   @id @default(auto()) @map("_id") @db.ObjectId
     sessionToken String   @unique
-    userId       String
+    userId       String   @db.ObjectId
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@index([userId])
     @@map("sessions")
 }
 
 model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    userId    String   @db.ObjectId
+    token     String   @unique
+    expiresAt DateTime
+    createdAt DateTime @default(now())
 
-    @@unique([identifier, token])
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
     @@map("verification_tokens")
 }
 
@@ -84,7 +85,7 @@ model VerificationToken {
 // ============================================
 
 model Workspace {
-    id          String  @id @default(cuid())
+    id          String  @id @default(auto()) @map("_id") @db.ObjectId
     name        String
     slug        String  @unique
     description String?
@@ -97,16 +98,15 @@ model Workspace {
     members WorkspaceMember[]
     forms   Form[]
 
-    @@index([slug])
     @@map("workspaces")
 }
 
 model WorkspaceMember {
-    id   String        @id @default(cuid())
+    id   String        @id @default(auto()) @map("_id") @db.ObjectId
     role WorkspaceRole @default(VIEWER)
 
-    userId      String
-    workspaceId String
+    userId      String @db.ObjectId
+    workspaceId String @db.ObjectId
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -115,8 +115,6 @@ model WorkspaceMember {
     workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 
     @@unique([userId, workspaceId])
-    @@index([userId])
-    @@index([workspaceId])
     @@map("workspace_members")
 }
 
@@ -132,7 +130,7 @@ enum WorkspaceRole {
 // ============================================
 
 model Form {
-    id          String  @id @default(cuid())
+    id          String  @id @default(auto()) @map("_id") @db.ObjectId
     title       String
     description String?
     slug        String  @unique
@@ -150,13 +148,13 @@ model Form {
     submissionCount Int @default(0)
 
     // Customization
-    theme           Json? // Custom colors, fonts, etc.
+    theme           Json?
     thankYouMessage String? @default("Thank you for your submission!")
     redirectUrl     String?
 
     // Ownership
-    userId      String
-    workspaceId String?
+    userId      String  @db.ObjectId
+    workspaceId String? @db.ObjectId
 
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @updatedAt
@@ -164,15 +162,11 @@ model Form {
 
     // Relations
     user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-    workspace   Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+    workspace   Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: NoAction, onUpdate: NoAction)
     fields      FormField[]
     submissions Submission[]
     webhooks    Webhook[]
 
-    @@index([userId])
-    @@index([workspaceId])
-    @@index([slug])
-    @@index([published])
     @@map("forms")
 }
 
@@ -183,8 +177,8 @@ enum FormStatus {
 }
 
 model FormField {
-    id     String @id @default(cuid())
-    formId String
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+    formId String @db.ObjectId
 
     // Field configuration
     type        FieldType
@@ -194,13 +188,13 @@ model FormField {
 
     // Validation
     required   Boolean @default(false)
-    validation Json? // Custom validation rules
+    validation Json?
 
     // Options (for select, radio, checkbox)
-    options Json? // Array of options
+    options Json?
 
     // Conditional logic
-    conditionalLogic Json? // Show/hide based on other fields
+    conditionalLogic Json?
 
     // Ordering
     position Int @default(0)
@@ -210,8 +204,6 @@ model FormField {
 
     form Form @relation(fields: [formId], references: [id], onDelete: Cascade)
 
-    @@index([formId])
-    @@index([position])
     @@map("form_fields")
 }
 
@@ -240,25 +232,23 @@ enum FieldType {
 // ============================================
 
 model Submission {
-    id     String @id @default(cuid())
-    formId String
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+    formId String @db.ObjectId
 
     // Response data
-    data Json // All form responses in JSON
+    data Json
 
     // Metadata
     ipAddress   String?
     userAgent   String?
     referer     String?
-    submittedBy String? // User ID if authenticated
+    submittedBy String? @db.ObjectId
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     form Form @relation(fields: [formId], references: [id], onDelete: Cascade)
 
-    @@index([formId])
-    @@index([createdAt])
     @@map("submissions")
 }
 
@@ -267,10 +257,10 @@ model Submission {
 // ============================================
 
 model ApiKey {
-    id     String @id @default(cuid())
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
     name   String
     key    String @unique
-    userId String
+    userId String @db.ObjectId
 
     lastUsedAt DateTime?
     expiresAt  DateTime?
@@ -280,17 +270,15 @@ model ApiKey {
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@index([userId])
-    @@index([key])
     @@map("api_keys")
 }
 
 model Webhook {
-    id      String   @id @default(cuid())
-    formId  String
+    id      String   @id @default(auto()) @map("_id") @db.ObjectId
+    formId  String   @db.ObjectId
     url     String
-    events  String[] // ['submission.created', 'form.published']
-    secret  String // For webhook signature verification
+    events  String[]
+    secret  String
     enabled Boolean  @default(true)
 
     createdAt DateTime @default(now())
@@ -298,6 +286,5 @@ model Webhook {
 
     form Form @relation(fields: [formId], references: [id], onDelete: Cascade)
 
-    @@index([formId])
     @@map("webhooks")
 }
