@@ -1,28 +1,35 @@
-'use client';
+'use client'
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import Label from './Label'; // your existing reusable Label
 
-const Label = ({ className = '', children, ...props }) => {
+/**
+ * FieldLabel renders a label for a form field with optional required star
+ * and accessibility support.
+ */
+const FieldLabel = ({ label, required = false, htmlFor, className = '', ...props }) => {
   return (
-    <label
-      data-slot="label"
-      className={`
-        flex items-center gap-2 text-sm leading-none font-medium select-none
-        group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50
-        peer-disabled:cursor-not-allowed peer-disabled:opacity-50
-        ${className}
-      `}
+    <Label
+      htmlFor={htmlFor}
+      className={`block text-gray-700 ${className}`}
       {...props}
     >
-      {children}
-    </label>
+      <span>{label}</span>
+      {required && (
+        <span className="text-red-500 ml-1" aria-hidden="true">
+          *
+        </span>
+      )}
+    </Label>
   );
 };
 
-Label.propTypes = {
+FieldLabel.propTypes = {
+  label: PropTypes.string.isRequired,
+  required: PropTypes.bool,
+  htmlFor: PropTypes.string,
   className: PropTypes.string,
-  children: PropTypes.node,
 };
 
-export default Label;
+export default FieldLabel;

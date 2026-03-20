@@ -1,0 +1,61 @@
+{
+"common": {
+    "submit": "Soumettre",
+    "cancel": "Annuler"
+},
+
+"form": {
+    "title": "Constructeur de formulaire",
+    "create": "Créer un formulaire",
+    "name": "Nom du formulaire"
+},
+
+"builder": {
+    "name": "Constructeur DeForm",
+    "tagline": "Créateur de formulaires de niveau professionnel",
+
+
+    "actions": {
+        "copyHtml": "Copier le HTML",
+        "export": "Exporter"
+    },
+
+    "fieldTypes": {
+        "title": "Types de champs",
+        "description": "Cliquez pour ajouter au formulaire"
+    },
+
+    "settings": {
+        "title": "Paramètres du formulaire",
+        "formTitle": "Titre du formulaire",
+        "formTitlePlaceholder": "ex. Formulaire de candidature",
+        "description": "Description",
+        "descriptionPlaceholder": "Brève description de votre formulaire"
+    },
+
+    "canvas": {
+        "title": "Champs du formulaire",
+        "count": "{{count}} champs",
+        "emptyTitle": "Aucun champ ajouté",
+        "emptyDescription": "Cliquez sur un type de champ à gauche pour l'ajouter"
+    },
+
+    "preview": {
+        "title": "Aperçu en direct",
+        "description": "Voyez votre formulaire en temps réel",
+        "defaultTitle": "Titre de votre formulaire",
+        "defaultDescription": "La description du formulaire apparaîtra ici",
+        "empty": "Ajoutez des champs pour les voir ici"
+    }
+},
+    "fieldTypes": {
+        "text": "Texte court",
+        "email": "Email",
+        "tel": "Numéro de téléphone",
+        "number": "Nombre",
+        "date": "Date",
+        "file": "Téléversement de fichier",
+        "rating": "Évaluation",
+        "checkbox": "Case à cocher"
+    }
+}

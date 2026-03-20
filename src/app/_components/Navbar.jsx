@@ -1,12 +1,13 @@
 'use client';
-
+import Icon from '@/icons/Icon';
 import { useState } from 'react';
 import Link from 'next/link';
-// import { Menu, X } from 'lucide-react';
-import { FaBars, FaTimes } from 'react-icons/fa';
-import { HiDocumentText } from 'react-icons/hi2'; 
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Navbar() {
+
+    const { t } = useTranslation()
+
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -15,22 +16,22 @@ export default function Navbar() {
             <div className="flex items-center justify-between h-16">
                 {/* Logo */}
                 <Link href="/" className="text-2xl font-bold text-foreground hover:opacity-80 transition-opacity flex items-center gap-2">
-                    <HiDocumentText className="text-2xl" /> DeForm.
+                    <Icon name="document" className="w-5 h-5" /> DeForm.
                 </Link>
 
                 {/* Desktop Auth Buttons */}
                 <div className="hidden md:flex items-center gap-3">
                     <Link
-                        href="/log-in"
+                        href="/signin"
                         className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                     >
-                        Log In
+                        {t("auth.landing.nav.logIn")}
                     </Link>
                     <Link
-                        href="/sign-up"
+                        href="/signup"
                         className="px-5 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
                     >
-                        Sign Up
+                        {t("auth.landing.nav.signUp")}
                     </Link>
                 </div>
 
@@ -41,7 +42,7 @@ export default function Navbar() {
                     aria-label="Toggle menu"
                     aria-expanded={isOpen}
                 >
-                    {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+                    {isOpen ? <Icon name="close" className="w-5 h-5" /> : <Icon name="menu" className="w-5 h-5" />}
                 </button>
             </div>
 
@@ -50,18 +51,18 @@ export default function Navbar() {
                 <div className="md:hidden py-4 border-t border-border">
                     <div className="flex flex-col gap-2">
                         <Link
-                            href="/log-in"
+                            href="/signin"
                             onClick={() => setIsOpen(false)}
                             className="px-4 py-3 text-center text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors"
                         >
-                            Log In
+                            {t("auth.landing.nav.logIn")}
                         </Link>
                         <Link
-                            href="/sign-up"
+                            href="/signup"
                             onClick={() => setIsOpen(false)}
                             className="px-4 py-3 text-center text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
                         >
-                            Sign Up
+                            {t("auth.landing.nav.signUp")}
                         </Link>
                     </div>
                 </div>

@@ -1,0 +1,303 @@
+// Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+// ============================================
+// CORE ENTITIES
+// ============================================
+
+model User {
+    id            String    @id @default(cuid())
+    email         String    @unique
+    emailVerified DateTime?
+    password      String
+    name          String?
+    image         String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Relations
+    accounts   Account[]
+    sessions   Session[]
+    workspaces WorkspaceMember[]
+    forms      Form[]
+    apiKeys    ApiKey[]
+
+    @@index([email])
+    @@map("users")
+}
+
+// NextAuth Account model
+model Account {
+    id                String  @id @default(cuid())
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? @db.Text
+    access_token      String? @db.Text
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? @db.Text
+    session_state     String?
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
+    @@index([userId])
+    @@map("accounts")
+}
+
+// NextAuth Session model
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
+    @@map("sessions")
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+    @@map("verification_tokens")
+}
+
+// ============================================
+// WORKSPACE & TEAMS
+// ============================================
+
+model Workspace {
+    id          String  @id @default(cuid())
+    name        String
+    slug        String  @unique
+    description String?
+    image       String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Relations
+    members WorkspaceMember[]
+    forms   Form[]
+
+    @@index([slug])
+    @@map("workspaces")
+}
+
+model WorkspaceMember {
+    id   String        @id @default(cuid())
+    role WorkspaceRole @default(VIEWER)
+
+    userId      String
+    workspaceId String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+    @@unique([userId, workspaceId])
+    @@index([userId])
+    @@index([workspaceId])
+    @@map("workspace_members")
+}
+
+enum WorkspaceRole {
+    OWNER
+    ADMIN
+    EDITOR
+    VIEWER
+}
+
+// ============================================
+// FORMS
+// ============================================
+
+model Form {
+    id          String  @id @default(cuid())
+    title       String
+    description String?
+    slug        String  @unique
+
+    // Status
+    status FormStatus @default(DRAFT)
+
+    // Settings
+    published            Boolean @default(false)
+    acceptingSubmissions Boolean @default(true)
+    requireAuth          Boolean @default(false)
+    showProgressBar      Boolean @default(true)
+
+    // Analytics
+    submissionCount Int @default(0)
+
+    // Customization
+    theme           Json? // Custom colors, fonts, etc.
+    thankYouMessage String? @default("Thank you for your submission!")
+    redirectUrl     String?
+
+    // Ownership
+    userId      String
+    workspaceId String?
+
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    publishedAt DateTime?
+
+    // Relations
+    user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+    workspace   Workspace?   @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+    fields      FormField[]
+    submissions Submission[]
+    webhooks    Webhook[]
+
+    @@index([userId])
+    @@index([workspaceId])
+    @@index([slug])
+    @@index([published])
+    @@map("forms")
+}
+
+enum FormStatus {
+    DRAFT
+    PUBLISHED
+    ARCHIVED
+}
+
+model FormField {
+    id     String @id @default(cuid())
+    formId String
+
+    // Field configuration
+    type        FieldType
+    label       String
+    placeholder String?
+    helpText    String?
+
+    // Validation
+    required   Boolean @default(false)
+    validation Json? // Custom validation rules
+
+    // Options (for select, radio, checkbox)
+    options Json? // Array of options
+
+    // Conditional logic
+    conditionalLogic Json? // Show/hide based on other fields
+
+    // Ordering
+    position Int @default(0)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    form Form @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+    @@index([formId])
+    @@index([position])
+    @@map("form_fields")
+}
+
+enum FieldType {
+    SHORT_TEXT
+    LONG_TEXT
+    EMAIL
+    PHONE
+    NUMBER
+    URL
+    DATE
+    TIME
+    DATETIME
+    SINGLE_SELECT
+    MULTIPLE_SELECT
+    CHECKBOX
+    RADIO
+    FILE_UPLOAD
+    RATING
+    MATRIX
+    SIGNATURE
+}
+
+// ============================================
+// SUBMISSIONS
+// ============================================
+
+model Submission {
+    id     String @id @default(cuid())
+    formId String
+
+    // Response data
+    data Json // All form responses in JSON
+
+    // Metadata
+    ipAddress   String?
+    userAgent   String?
+    referer     String?
+    submittedBy String? // User ID if authenticated
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    form Form @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+    @@index([formId])
+    @@index([createdAt])
+    @@map("submissions")
+}
+
+// ============================================
+// API & WEBHOOKS
+// ============================================
+
+model ApiKey {
+    id     String @id @default(cuid())
+    name   String
+    key    String @unique
+    userId String
+
+    lastUsedAt DateTime?
+    expiresAt  DateTime?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
+    @@index([key])
+    @@map("api_keys")
+}
+
+model Webhook {
+    id      String   @id @default(cuid())
+    formId  String
+    url     String
+    events  String[] // ['submission.created', 'form.published']
+    secret  String // For webhook signature verification
+    enabled Boolean  @default(true)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    form Form @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+    @@index([formId])
+    @@map("webhooks")
+}
