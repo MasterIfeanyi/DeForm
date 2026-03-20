@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
-import BuilderLayout from '@/app/_components/builder/BuilderLayout';
+import BuilderLayout from '@/app/features/builder/BuilderLayout';
 import { useFormBuilder } from '@/hooks/useFormBuilder';
-import FormBuilder from '@/app/_components/FormBuilder';
+import FormBuilder from '@/app/features/FormBuilder';
 
 export default function FormBuilderPage() {
   const params = useParams();
@@ -18,7 +18,7 @@ export default function FormBuilderPage() {
   useEffect(() => {
     async function loadForm() {
       try {
-        // TODO: Fetch from API
+        // todo: Fetch from API
         // const res = await fetch(`/api/forms/${formId}`);
         // const data = await res.json();
         setLoading(false);

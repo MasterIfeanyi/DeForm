@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { Input, Button } from '@/components/ui';
 import Image from "next/image";
+import Link from 'next/link';
 import { useTranslation } from "@/hooks/useTranslation"
 
 
@@ -65,7 +66,6 @@ export default function SignInForm() {
     <>
       <div className='min-h-screen w-full grid grid-cols-1 lg:grid-cols-2 bg-card'>
 
-
         <div className="hidden lg:block relative w-full h-screen">
           <Image
             src="/images/formsignup.png"
@@ -119,7 +119,7 @@ export default function SignInForm() {
               </Button>
 
               {/* Forgotten Password Link */}
-              <div className="text-center py-2">
+              <div className="text-center">
                 <a href="#"
                   className="text-primary hover:underline text-sm font-medium"
                 >
@@ -137,7 +137,9 @@ export default function SignInForm() {
                   variant="other"
                   className="h-12! rounded-xl! border-2! border-primary! text-primary! hover:bg-accent! font-semibold! px-8!"
                 >
-                  {t("auth.signIn.createAccount")}
+                  <Link href="/signup">
+                    {t("auth.signIn.createAccount")}
+                  </Link>
                 </Button>
               </div>
 
