@@ -76,6 +76,10 @@ export default function SignUpForm() {
                 return
             }
 
+            // Store temporarily for auto-login after verification
+            sessionStorage.setItem('pendingEmail', form.email)
+            sessionStorage.setItem('pendingPassword', form.password)
+
             router.push('/verify-email')
         } finally {
             setLoading(false)

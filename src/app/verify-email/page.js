@@ -20,10 +20,31 @@ export default function VerifyEmailPage() {
         });
 
         const data = await res.json();
-        setLoading(false);
-
+        
         if (!res.ok) {
             setError(data.error);
+            setLoading(false);
+            return;
+        }
+
+         // 2. Grab credentials stored during signup
+        const email = sessionStorage.getItem('pendingEmail');
+        const password = sessionStorage.getItem('pendingPassword');
+
+        // 3. Sign in automatically to create session
+        const result = await signIn('credentials', {
+            email,
+            password,
+            redirect: false,
+        });
+
+        // 4. Clean up
+        sessionStorage.removeItem('pendingEmail');
+        sessionStorage.removeItem('pendingPassword');
+
+        if (result?.error) {
+            setError('Verified but could not sign in. Please sign in manually.');
+            router.push('/signin');
             return;
         }
 
