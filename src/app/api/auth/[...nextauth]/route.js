@@ -8,7 +8,7 @@ const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
 
   session: {
-    strategy: 'database', // store session in MongoDB
+    strategy: 'jwt',// store session in Jwt cookie (http-only)
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
 
