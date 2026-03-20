@@ -14,7 +14,7 @@ const Button = ({
     children
 }) => {
 
-    const baseStyles = "relative transition font-semibold focus:outline-none rounded-lg";
+    const baseStyles = "relative transition font-semibold focus:outline-none rounded-lg h-13!";
   
     const variantStyles = {
         primary: "bg-primary hover:bg-primary-dark text-white",

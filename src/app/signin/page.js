@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { Input, Button } from '@/components/ui';
 import Image from "next/image";
+import Link from 'next/link';
 import { useTranslation } from "@/hooks/useTranslation"
 
 
@@ -137,7 +138,9 @@ export default function SignInForm() {
                   variant="other"
                   className="h-12! rounded-xl! border-2! border-primary! text-primary! hover:bg-accent! font-semibold! px-8!"
                 >
-                  {t("auth.signIn.createAccount")}
+                  <Link href="/signup">
+                    {t("auth.signIn.createAccount")}
+                  </Link>
                 </Button>
               </div>
 

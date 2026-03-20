@@ -4,6 +4,7 @@ import React from 'react'
 import Image from 'next/image'
 import PropTypes from 'prop-types'
 import { clsx } from 'clsx'
+import Icon from '@/icons/Icon'
 
 const Input = ({
     id,
@@ -20,6 +21,8 @@ const Input = ({
     icon = false,
     imgSrc,
     iconClassName = "",
+    iconName,
+    onIconClick,
     ...rest
   }) => {
 
@@ -51,17 +54,23 @@ const Input = ({
           className
         )}
       />
-      {icon && imgSrc && (
-        <img 
-          src={imgSrc} 
-          width={24}
-          height={24}
-          alt="icon" 
-          className={clsx(
-            "absolute right-3 bottom-2 w-6 h-6",
-            iconClassName
-          )}
+      {iconName && (
+        <Icon
+          name={iconName}
+          onClick={onIconClick}
+          className={`absolute right-4 top-1/2 -translate-y-1/2 ${iconClassName}`}
         />
+
+        // <img 
+        //   src={imgSrc} 
+        //   width={24}
+        //   height={24}
+        //   alt="icon" 
+        //   className={clsx(
+        //     "absolute right-3 bottom-2 w-6 h-6",
+        //     iconClassName
+        //   )}
+        // />
       )}
     </div>
   )

@@ -10,6 +10,7 @@ import Image from "next/image";
 import { useTranslation } from "@/hooks/useTranslation"
 import Icon from '@/icons/Icon';
 
+
 export default function SignUpForm() {
 
     const { t } = useTranslation()
@@ -67,13 +68,13 @@ export default function SignUpForm() {
         <>
             <div className="min-h-screen bg-background flex flex-col items-center justify-start px-4 py-8">
                 {/* Back arrow */}
-                <div className="w-full max-w-[520px] mb-6">
+                <div className="w-full max-w-130 mb-6">
                     <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">
                         <Icon name="back" className="w-5 h-5 text-current" />
                     </Link>
                 </div>
 
-                <div className="w-full max-w-[520px]">
+                <div className="w-full max-w-130">
                     {/* Logo */}
                     <div className="flex items-center gap-2 mb-5">
                         <Icon name="document" className="w-5 h-5" /> DeForm.
@@ -85,36 +86,114 @@ export default function SignUpForm() {
                     <p className="text-muted-foreground text-sm mb-7 leading-relaxed">
                         {t('auth.signUp.subtitle')}
                     </p>
-                </div>
 
-                <FieldLabel
-                    className="text-sm font-medium text-foreground mb-2"
-                />
-                <div className="flex gap-3 mb-1">
-                    <div className="flex-1">
-                        <Input
-                            id="firstName"
-                            placeholder={t('auth.signUp.firstNamePlaceholder')}
-                            value={form.firstName}
-                            onChange={handleChange('firstName')}
-                            className={errors.firstName ? 'border-danger focus:border-danger' : ''}
+
+                    <>
+                        <FieldLabel
+                            labelIdentifier={t('auth.signUp.nameLabel')}
+                            className="text-base font-medium text-foreground mb-3 block"
                         />
-                        {errors.firstName && (
-                            <p className="text-danger text-xs mt-1">{errors.firstName}</p>
+                        <div className="flex gap-4 mb-1">
+                            <div className="flex-1">
+                                <Input
+                                    id="firstName"
+                                    placeholder={t('auth.signUp.firstNamePlaceholder')}
+                                    value={form.firstName}
+                                    onChange={handleChange('firstName')}
+                                    wrapperClassName="w-full"
+                                    className={`h-14 text-base rounded-xl ${errors.firstName ? 'border-danger focus:border-danger' : ''}`}
+                                />
+                                {errors.firstName && (
+                                    <p className="text-danger text-xs mt-1">{errors.firstName}</p>
+                                )}
+                            </div>
+
+                            <div className="flex-1">
+                                <Input
+                                    id="lastName"
+                                    placeholder={t('auth.signUp.lastNamePlaceholder')}
+                                    value={form.lastName}
+                                    onChange={handleChange('lastName')}
+                                    wrapperClassName="w-full"
+                                    className={`h-14 text-base rounded-xl ${errors.lastName ? 'border-danger focus:border-danger' : ''}`}
+                                />
+                                {errors.lastName && (
+                                    <p className="text-danger text-xs mt-1">{errors.lastName}</p>
+                                )}
+                            </div>
+                        </div>
+                    </>
+
+                    {/* Email */}
+                    <div className="mt-4">
+                        <FieldLabel
+                            labelIdentifier={t('auth.signUp.emailLabel')}
+                            className="text-base font-medium text-foreground mb-3 block"
+                        />
+                        <Input
+                            id="email"
+                            type="email"
+                            placeholder={t('auth.signUp.emailPlaceholder')}
+                            value={form.email}
+                            onChange={handleChange('email')}
+                            wrapperClassName="w-full"
+                            className={`h-14 text-base rounded-xl ${errors.email ? 'border-danger focus:border-danger' : ''}`}
+                        />
+                        {errors.email && (
+                            <p className="text-danger text-xs mt-1">{errors.email}</p>
                         )}
                     </div>
-                    <div className="flex-1">
-                        <Input
-                            id="lastName"
-                            placeholder={t('auth.signUp.lastNamePlaceholder')}
-                            value={form.lastName}
-                            onChange={handleChange('lastName')}
-                            className={errors.lastName ? 'border-danger focus:border-danger' : ''}
+
+
+                    {/* Password */}
+                    <div className="mt-4 relative">
+                        <FieldLabel
+                            labelIdentifier={t('auth.signUp.passwordLabel')}
+                            className="text-base font-medium text-foreground mb-3 block"
                         />
-                        {errors.lastName && (
-                            <p className="text-danger text-xs mt-1">{errors.lastName}</p>
+                        <Input
+                            id="password"
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder={t('auth.signUp.passwordPlaceholder')}
+                            value={form.password}
+                            onChange={handleChange('password')}
+                            icon={true}
+                            iconName={showPassword ? 'eyeOff' : 'eye'}
+                            onIconClick={() => setShowPassword(prev => !prev)}
+                            wrapperClassName="w-full"
+                            className={`h-14 placeholder:text-muted-foreground text-base rounded-xl ${errors.password ? 'border-danger focus:border-danger' : ''}`}
+                        />
+                        {errors.password && (
+                            <p className="text-danger text-xs mt-1">{errors.password}</p>
                         )}
                     </div>
+
+
+                    {/* Submit */}
+                    <div className="mt-5 space-y-3">
+                        <Button
+                            variant="primary"
+                            size="large"
+                            loading={loading}
+                            onClick={handleSubmit}
+                            className="rounded-xl! bg-blue-600! hover:bg-blue-700! text-lg!"
+                        >
+                            {t('common.submit')}
+                        </Button>
+
+                        <Button
+                            variant="neutral"
+                            size="large"
+                            className="rounded-xl! border-secondary text-foreground hover:bg-muted"
+                        >
+                            <Link href="/signin">
+                                {t('auth.signUp.alreadyHaveAccount')}
+                            </Link>
+                        </Button>
+                    </div>
+
+
+
                 </div>
 
             </div>

@@ -1,14 +1,16 @@
-import { 
-  FiMail, 
-  FiFileText, 
-  FiPhone, 
-  FiUser, 
-  FiCalendar, 
-  FiHash, 
-  FiUpload, 
-  FiStar, 
+import {
+  FiMail,
+  FiFileText,
+  FiPhone,
+  FiUser,
+  FiCalendar,
+  FiHash,
+  FiUpload,
+  FiStar,
   FiCheckSquare,
-  FiChevronLeft
+  FiChevronLeft,
+  FiEye,
+  FiEyeOff
 } from "react-icons/fi";
 
 import { FaBars, FaTimes } from 'react-icons/fa';
@@ -28,5 +30,7 @@ export const icons = {
   back: FiChevronLeft,
   menu: FaBars,
   close: FaTimes,
-  document: HiDocumentText
+  document: HiDocumentText,
+  eye: FiEye,
+  eyeOff: FiEyeOff
 };
