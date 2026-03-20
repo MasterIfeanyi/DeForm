@@ -1,11 +1,10 @@
-// lib/mail.ts
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendVerificationEmail(email, token) {
-  await resend.emails.send({
-    from: 'DeForm <noreply@yourdomain.com>',
+  const { data, error } = await resend.emails.send({
+    from: 'DeForm <onboarding@resend.dev>',
     to: email,
     subject: 'Verify your email',
     html: `
@@ -15,4 +14,7 @@ export async function sendVerificationEmail(email, token) {
       <p>This code expires in 24 hours.</p>
     `,
   });
+
+  console.log('Resend data:', data);
+  console.log('Resend error:', error);
 }

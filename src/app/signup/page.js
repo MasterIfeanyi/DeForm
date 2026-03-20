@@ -13,6 +13,8 @@ import Icon from '@/icons/Icon';
 
 export default function SignUpForm() {
 
+    const router = useRouter()
+
     const { t } = useTranslation()
 
     const [form, setForm] = useState({
@@ -57,8 +59,24 @@ export default function SignUpForm() {
         if (!validate()) return
         setLoading(true)
         try {
-            // todo: replace with real API call
-            await new Promise(resolve => setTimeout(resolve, 1500))
+            const res = await fetch('/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: form.email,
+                    password: form.password,
+                    name: `${form.firstName} ${form.lastName}`.trim(),
+                }),
+            })
+
+            const data = await res.json()
+
+            if (!res.ok) {
+                setErrors({ email: data.error })
+                return
+            }
+
+            router.push('/verify-email')
         } finally {
             setLoading(false)
         }
