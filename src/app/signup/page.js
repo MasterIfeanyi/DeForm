@@ -168,34 +168,34 @@ export default function SignUpForm() {
                         )}
                     </div>
 
+                    <Button
+                        variant="primary"
+                        size="large"
+                        loading={loading}
+                        onClick={handleSubmit}
+                        className="rounded-xl! mt-5 bg-blue-600! hover:bg-blue-700! text-lg!"
+                    >
+                        {t('common.submit')}
+                    </Button>
 
-                    {/* Submit */}
-                    <div className="mt-5 space-y-3">
-                        <Button
-                            variant="primary"
-                            size="large"
-                            loading={loading}
-                            onClick={handleSubmit}
-                            className="rounded-xl! bg-blue-600! hover:bg-blue-700! text-lg!"
-                        >
-                            {t('common.submit')}
-                        </Button>
 
+                    {/* Divider */}
+                    <div className="border-t border-border my-6"></div>
+
+
+                    {/* Create Account Button */}
+                    <div className="flex justify-center">
                         <Button
-                            variant="neutral"
-                            size="large"
-                            className="rounded-xl! border-secondary text-foreground hover:bg-muted"
+                            type="button"
+                            variant="other"
+                            className="h-12! rounded-xl! border-2! border-primary! text-primary! hover:bg-accent! font-semibold! px-8!"
                         >
                             <Link href="/signin">
                                 {t('auth.signUp.alreadyHaveAccount')}
                             </Link>
                         </Button>
                     </div>
-
-
-
                 </div>
-
             </div>
         </>
     )
