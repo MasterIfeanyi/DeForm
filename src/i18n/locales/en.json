@@ -81,7 +81,13 @@
             "title": "Form Fields",
             "count": "{{count}} fields",
             "emptyTitle": "No fields added yet",
-            "emptyDescription": "Click a field type on the left to add it"
+            "emptyDescription": "Click a field type on the left to add it",
+            "dropHere": "Drop file here",
+            "clickToUpload": "Click or drag to upload",
+            "maxSize": "Max {{size}}",
+            "uploading": "Uploading...",
+            "uploadSuccess": "Uploaded successfully",
+            "tryAgain": "Click to try again"
         },
         "preview": {
             "title": "Live Preview",
