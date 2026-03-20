@@ -5,14 +5,14 @@ import Link from 'next/link'
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
-import { Input, Button } from '@/components/ui';
+import { Input, Button, FieldLabel } from '@/components/ui';
 import Image from "next/image";
 import { useTranslation } from "@/hooks/useTranslation"
 import Icon from '@/icons/Icon';
 
 export default function SignUpForm() {
 
-    const {t} = useTranslation()
+    const { t } = useTranslation()
 
     const [form, setForm] = useState({
         firstName: '',
@@ -24,6 +24,12 @@ export default function SignUpForm() {
     const [errors, setErrors] = useState({})
     const [loading, setLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
+
+
+    const handleChange = (field) => (e) => {
+        setForm(prev => ({ ...prev, [field]: e.target.value }))
+        if (errors[field]) setErrors(prev => ({ ...prev, [field]: undefined }))
+    }
 
 
     const validate = () => {
@@ -79,6 +85,36 @@ export default function SignUpForm() {
                     <p className="text-muted-foreground text-sm mb-7 leading-relaxed">
                         {t('auth.signUp.subtitle')}
                     </p>
+                </div>
+
+                <FieldLabel
+                    className="text-sm font-medium text-foreground mb-2"
+                />
+                <div className="flex gap-3 mb-1">
+                    <div className="flex-1">
+                        <Input
+                            id="firstName"
+                            placeholder={t('auth.signUp.firstNamePlaceholder')}
+                            value={form.firstName}
+                            onChange={handleChange('firstName')}
+                            className={errors.firstName ? 'border-danger focus:border-danger' : ''}
+                        />
+                        {errors.firstName && (
+                            <p className="text-danger text-xs mt-1">{errors.firstName}</p>
+                        )}
+                    </div>
+                    <div className="flex-1">
+                        <Input
+                            id="lastName"
+                            placeholder={t('auth.signUp.lastNamePlaceholder')}
+                            value={form.lastName}
+                            onChange={handleChange('lastName')}
+                            className={errors.lastName ? 'border-danger focus:border-danger' : ''}
+                        />
+                        {errors.lastName && (
+                            <p className="text-danger text-xs mt-1">{errors.lastName}</p>
+                        )}
+                    </div>
                 </div>
 
             </div>
