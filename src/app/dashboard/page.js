@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useMemo} from 'react'
+import React, { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui'
 import Icon from '@/icons/Icon'
@@ -9,24 +9,26 @@ import NavLink from '../_components/NavLink'
 import StatCard from '../_components/StatCard'
 import { signOut } from 'next-auth/react';
 import { getNestedValue } from '@/utils/fx'
+import { useQuery } from '@tanstack/react-query'
 
 const STATS_CONFIG = [
-  { key: 'forms',      title: 'Forms',      icon: 'document',  path: 'forms.total'     },
-  { key: 'responses',  title: 'Responses',  icon: 'email',     path: 'responses.total' },
-  { key: 'views',      title: 'Views',      icon: 'eye',       path: 'views.total'     },
-  { key: 'conversion', title: 'Conversion', icon: 'chart',     path: 'conversion.rate' },
+  { key: 'forms', title: 'Forms', icon: 'document', path: 'forms.total' },
+  { key: 'responses', title: 'Responses', icon: 'email', path: 'responses.total' },
+  { key: 'views', title: 'Views', icon: 'eye', path: 'views.total' },
+  { key: 'conversion', title: 'Conversion', icon: 'chart', path: 'conversion.rate' },
 ];
 
 const dashboardMetrics = {
-  forms:      { total: 12   },
-  responses:  { total: 1245 },
-  views:      { total: 3890 },
-  conversion: { rate: 24    },
+  forms: { total: 12 },
+  responses: { total: 1245 },
+  views: { total: 3890 },
+  conversion: { rate: 24 },
 };
 
 export default function Dashboard() {
 
-  
+  const [isRecentFormsOpen, setIsRecentFormsOpen] = useState(true);
+
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: "home" },
     { href: "/forms", label: "My Forms", icon: "document" },
@@ -34,14 +36,21 @@ export default function Dashboard() {
     { href: "/settings", label: "Settings", icon: "settings" },
   ];
 
+  const { data: dashboardMetrics } = useQuery({
+    queryKey: ['dashboard-metrics'],
+    queryFn: () => fetch('/api/dashboard').then(res => res.json()),
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
+
   const stats = useMemo(() => {
-  return STATS_CONFIG.map(stat => ({
-    title: stat.title,
-    value: getNestedValue(dashboardMetrics, stat.path)?.toLocaleString() || '0',
-    icon: <Icon name={stat.icon} className="w-5 h-5" />,
-    subtitle: `All ${stat.title.toLowerCase()}`,
-  }));
-}, []);
+    return STATS_CONFIG.map(stat => ({
+      title: stat.title,
+      value: getNestedValue(dashboardMetrics, stat.path)?.toLocaleString() || '0',
+      icon: <Icon name={stat.icon} className="w-5 h-5" />,
+      // subtitle: `All ${stat.title.toLowerCase()}`,
+    }));
+  }, [dashboardMetrics]);
 
 
   return (
@@ -97,33 +106,40 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Forms */}
-        <div className="border border-border rounded-xl p-5 bg-card">
+        <div className="rounded-xl mt-2 bg-card">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-medium">Recent Forms</h2>
-            <Link href="#" className="text-sm text-primary">View all</Link>
+            {/* <Link href="#" className="text-sm text-primary">View all</Link> */}
+            <Icon
+              onClick={() => setIsRecentFormsOpen(prev => !prev)}
+              name="chevronDown"
+              className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${isRecentFormsOpen ? 'rotate-180' : ''
+                }`}
+            />
           </div>
 
-          <div className="space-y-3">
+          {isRecentFormsOpen && (
+            <div className="space-y-3">
+              {[1, 2, 3].map((item) => (
+                <div key={item} className="flex items-center justify-between p-4 rounded-lg border border-border hover:bg-muted transition">
+                  <div>
+                    <p className="font-medium">Untitled Form</p>
+                    <p className="text-sm text-muted-foreground">0 responses</p>
+                  </div>
 
-            {[1, 2, 3].map((item) => (
-              <div key={item} className="flex items-center justify-between p-4 rounded-lg border border-border hover:bg-muted transition">
-                <div>
-                  <p className="font-medium">Untitled Form</p>
-                  <p className="text-sm text-muted-foreground">0 responses</p>
+                  <div className="flex items-center gap-2">
+                    <Button variant="other" className="h-10! px-4!">
+                      Edit
+                    </Button>
+                    <Button variant="primary" className="h-10! px-4!">
+                      View
+                    </Button>
+                  </div>
                 </div>
+              ))}
+            </div>
+          )}
 
-                <div className="flex items-center gap-2">
-                  <Button variant="other" className="h-10! px-4!">
-                    Edit
-                  </Button>
-                  <Button variant="primary" className="h-10! px-4!">
-                    View
-                  </Button>
-                </div>
-              </div>
-            ))}
-
-          </div>
         </div>
 
         {/* Empty State */}

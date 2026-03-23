@@ -14,6 +14,7 @@ import {
   FiLogOut,
   FiHome,
   FiBarChart2,
+  FiChevronDown,
   FiSettings
 } from "react-icons/fi";
 
@@ -40,5 +41,6 @@ export const icons = {
   logout: FiLogOut,
   home: FiHome,
   chart: FiBarChart2,
-  settings: FiSettings
+  settings: FiSettings,
+  chevronDown: FiChevronDown, 
 };
