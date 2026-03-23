@@ -1,7 +1,17 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import prisma from '@/lib/prisma';
+import bcrypt from 'bcryptjs';
 
 const handler = NextAuth({
+  adapter: PrismaAdapter(prisma),
+
+  session: {
+    strategy: 'jwt',// store session in Jwt cookie (http-only)
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -10,34 +20,35 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        // Your logic to verify email/password
-        // Query database, check bcrypt hash, etc.
-        const user = await db.user.findUnique({
+        const user = await prisma.user.findUnique({
           where: { email: credentials.email }
         });
 
-        if (user && await bcrypt.compare(credentials.password, user.hashedPassword)) {
-          return { id: user.id, email: user.email, name: user.name };
-        }
-        return null; // Invalid credentials
+        if (!user) return null;
+
+        if (!user.emailVerified) throw new Error('Please verify your email first');
+
+        const isValid = await bcrypt.compare(credentials.password, user.password);
+        if (!isValid) return null;
+
+        return { id: user.id, email: user.email, name: user.name };
       }
     })
   ],
+
   pages: {
-    signIn: '/signin', // Custom sign-in page (your component)
+    signIn: '/signin',
   },
+
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
+    async session({ session, user }) {
+      if (session?.user) {
+        session.user.id = user.id;
       }
-      return token;
-    },
-    async session({ session, token }) {
-      session.user.id = token.id;
       return session;
-    }
+    },
   },
+
   secret: process.env.NEXTAUTH_SECRET,
 });
 

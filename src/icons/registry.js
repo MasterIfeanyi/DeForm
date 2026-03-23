@@ -10,7 +10,12 @@ import {
   FiCheckSquare,
   FiChevronLeft,
   FiEye,
-  FiEyeOff
+  FiEyeOff,
+  FiLogOut,
+  FiHome,
+  FiBarChart2,
+  FiChevronDown,
+  FiSettings
 } from "react-icons/fi";
 
 import { FaBars, FaTimes } from 'react-icons/fa';
@@ -32,5 +37,10 @@ export const icons = {
   close: FaTimes,
   document: HiDocumentText,
   eye: FiEye,
-  eyeOff: FiEyeOff
+  eyeOff: FiEyeOff,
+  logout: FiLogOut,
+  home: FiHome,
+  chart: FiBarChart2,
+  settings: FiSettings,
+  chevronDown: FiChevronDown, 
 };

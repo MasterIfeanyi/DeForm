@@ -2,24 +2,24 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
 export async function POST(req) {
-  const { token } = await req.json();
+  const { code, email } = await req.json();
 
-  if (!token) {
-    return NextResponse.json({ error: 'Token is required' }, { status: 400 });
+  if (!code) {
+    return NextResponse.json({ error: 'Verification code is required' }, { status: 400 });
   }
 
   const record = await prisma.verificationToken.findUnique({
-    where: { token },
+    where: { token: code },
     include: { user: true },
   });
 
   if (!record) {
-    return NextResponse.json({ error: 'Invalid token' }, { status: 400 });
+    return NextResponse.json({ error: 'Invalid token or expired code' }, { status: 400 });
   }
 
   if (record.expiresAt < new Date()) {
-    await prisma.verificationToken.delete({ where: { token } });
-    return NextResponse.json({ error: 'Token has expired' }, { status: 400 });
+    await prisma.verificationToken.delete({ where: { token: code } });
+    return NextResponse.json({ error: 'Code has expired' }, { status: 400 });
   }
 
   await prisma.user.update({
@@ -27,7 +27,7 @@ export async function POST(req) {
     data: { emailVerified: new Date() },
   });
 
-  await prisma.verificationToken.delete({ where: { token } });
+  await prisma.verificationToken.delete({ where: { token: code } });
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true, email: record.user.email });
 }
