@@ -27,15 +27,18 @@ const dashboardMetrics = {
 
 export default function Dashboard() {
 
-  const [sidebarWidth, setSidebarWidth] = useState(216); // 54 * 4 = 216px (w‑54)
   const [isDragging, setIsDragging] = useState(false);
   const dividerRef = useRef(null);
 
-  // Load saved width from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem('sidebarWidth');
-    if (saved) setSidebarWidth(Number(saved));
-  }, []);
+  const [sidebarWidth, setSidebarWidth] = useState(() => {
+    if (typeof window !== 'undefined') {
+      // Load saved width from localStorage
+      const saved = localStorage.getItem('sidebarWidth');
+      if (saved) return Number(saved);
+    }
+    return 216; // default width // 54 * 4 = 216px (w‑54)
+  });
+
 
   // Mouse move/up handlers
   useEffect(() => {
