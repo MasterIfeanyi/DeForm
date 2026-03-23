@@ -12,6 +12,10 @@ export async function GET() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+
+  const allForms = await prisma.form.findMany({ take: 3 });
+  console.log('SAMPLE FORMS:', allForms.map(f => f.userId));
+
   const forms = await prisma.form.findMany({
     where: { userId: session.user.id },
     orderBy: { updatedAt: 'desc' },
@@ -37,6 +41,8 @@ export async function GET() {
     createdAt: form.createdAt,
     updatedAt: form.updatedAt,
   }))
+
+  console.log('FORMS FOUND:', forms.length, forms)
 
   return NextResponse.json(mapped)
 }
