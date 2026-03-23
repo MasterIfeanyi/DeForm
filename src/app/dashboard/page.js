@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo, useState, useRef, useEffect } from 'react'
+import React, { useMemo, useState, useRef, useEffect, useLayoutEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui'
 import Icon from '@/icons/Icon'
@@ -29,14 +29,14 @@ export default function Dashboard() {
 
   const [isDragging, setIsDragging] = useState(false);
   const dividerRef = useRef(null);
+  const hasLoaded = useRef(false);
 
   const [sidebarWidth, setSidebarWidth] = useState(() => {
-    if (typeof window !== 'undefined') {
-      // Load saved width from localStorage
-      const saved = localStorage.getItem('sidebarWidth');
-      if (saved) return Number(saved);
-    }
-    return 216; // default width // 54 * 4 = 216px (w‑54)
+    if (typeof window === 'undefined') return 216; // SSR guard
+    const saved = localStorage.getItem('sidebarWidth');
+    if (!saved) return 216;
+    const width = Number(saved);
+    return width >= 180 && width <= 320 ? width : 216;
   });
 
 
