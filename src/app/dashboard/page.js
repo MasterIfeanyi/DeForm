@@ -1,15 +1,15 @@
 'use client'
 
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui'
 import Icon from '@/icons/Icon'
-import { usePathname } from "next/navigation";
 import NavLink from '../_components/NavLink'
 import StatCard from '../_components/StatCard'
+import FormCard from '../_components/FormCard'
 import { signOut } from 'next-auth/react';
 import { getNestedValue } from '@/utils/fx'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 const STATS_CONFIG = [
   { key: 'forms', title: 'Forms', icon: 'document', path: 'forms.total' },
@@ -27,6 +27,50 @@ const dashboardMetrics = {
 
 export default function Dashboard() {
 
+  const [sidebarWidth, setSidebarWidth] = useState(216); // 54 * 4 = 216px (w‑54)
+  const [isDragging, setIsDragging] = useState(false);
+  const dividerRef = useRef(null);
+
+  // Load saved width from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('sidebarWidth');
+    if (saved) setSidebarWidth(Number(saved));
+  }, []);
+
+  // Mouse move/up handlers
+  useEffect(() => {
+    const onMouseMove = (e) => {
+      if (!isDragging) return;
+      const newWidth = e.clientX;
+      const min = 180;
+      const max = 320;
+      if (newWidth >= min && newWidth <= max) {
+        setSidebarWidth(newWidth);
+      }
+    };
+
+    const onMouseUp = () => {
+      setIsDragging(false);
+      localStorage.setItem('sidebarWidth', sidebarWidth.toString());
+    };
+
+    if (isDragging) {
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+  }, [isDragging, sidebarWidth]);
+
+  const startDragging = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const queryClient = useQueryClient();
   const [isRecentFormsOpen, setIsRecentFormsOpen] = useState(true);
 
   const navItems = [
@@ -36,33 +80,49 @@ export default function Dashboard() {
     { href: "/settings", label: "Settings", icon: "settings" },
   ];
 
-  const { data: dashboardMetrics } = useQuery({
-    queryKey: ['dashboard-metrics'],
-    queryFn: () => fetch('/api/dashboard').then(res => res.json()),
+  const handleLogout = () => {
+    // clear react query cache
+    queryClient.clear();
+    signOut({ callbackUrl: '/signin' });
+  };
+
+  // const { data: dashboardMetrics } = useQuery({
+  //   queryKey: ['dashboard-metrics'],
+  //   queryFn: () => fetch('/api/dashboard').then(res => res.json()),
+  //   staleTime: 5 * 60 * 1000,
+  //   refetchOnWindowFocus: false,
+  // });
+
+  const { data: forms = [] } = useQuery({
+    queryKey: ['forms'],
+    queryFn: async () => {
+      const res = await fetch('/api/forms')
+      if (!res.ok) return [] // 401, 500, etc → just return empty array
+      const data = await res.json()
+      return Array.isArray(data) ? data : []
+    },
+    // .then(data => Array.isArray(data) ? data : data.forms ?? data.data ?? []),
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
-  });
+  })
 
   const stats = useMemo(() => {
     return STATS_CONFIG.map(stat => ({
       title: stat.title,
       value: getNestedValue(dashboardMetrics, stat.path)?.toLocaleString() || '0',
       icon: <Icon name={stat.icon} className="w-5 h-5" />,
-      // subtitle: `All ${stat.title.toLowerCase()}`,
     }));
-  }, [dashboardMetrics]);
+  }, []);
 
 
   return (
     <div className="min-h-screen bg-background flex">
-
       {/* Sidebar */}
-      <aside className="w-54 border-r border-border p-5 hidden md:flex flex-col">
-        <div className="flex items-center gap-2 mb-8">
+      <aside className="border-r border-border p-5 hidden md:flex flex-col transition-all duration-150" style={{ width: sidebarWidth }}>
+        <Link href="/" className="flex items-center gap-2 mb-8">
           <Icon name="document" className="w-5 h-5" />
           <span className="font-medium">DeForm.</span>
-        </div>
-
+        </Link>
         <nav className="flex flex-col gap-2 text-sm">
           {navItems.map((item) => (
             <NavLink key={item.href} href={item.href} icon={item.icon}>
@@ -70,29 +130,37 @@ export default function Dashboard() {
             </NavLink>
           ))}
         </nav>
-
         <div className="mt-auto">
           <Button
             variant="other"
             className="w-full mt-6"
             icon={<Icon name="logout" className="w-4 h-4" />}
-            onClick={() => signOut({ callbackUrl: '/home' })}
+            onClick={handleLogout}
           >
             Log out
           </Button>
         </div>
       </aside>
 
+      <div
+        ref={dividerRef}
+        className="hidden md:block relative w-1 cursor-col-resize hover:bg-blue-200/50 transition-colors group"
+        onMouseDown={startDragging}
+      >
+        {/* Icon that appears on hover */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          <Icon name="resize" className="w-4 h-4 text-blue-500" />
+        </div>
+      </div>
+
       {/* Main */}
       <main className="flex-1 p-6 md:p-10">
-
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-2xl font-medium">Dashboard</h1>
             <p className="text-muted-foreground text-sm">Manage your forms and track responses</p>
           </div>
-
           <Link href="builder" className="rounded-xl! p-3! text-white bg-blue-600! hover:bg-blue-700!">
             + Create Form
           </Link>
@@ -109,7 +177,6 @@ export default function Dashboard() {
         <div className="rounded-xl mt-2 bg-card">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-medium">Recent Forms</h2>
-            {/* <Link href="#" className="text-sm text-primary">View all</Link> */}
             <Icon
               onClick={() => setIsRecentFormsOpen(prev => !prev)}
               name="chevronDown"
@@ -120,26 +187,11 @@ export default function Dashboard() {
 
           {isRecentFormsOpen && (
             <div className="space-y-3">
-              {[1, 2, 3].map((item) => (
-                <div key={item} className="flex items-center justify-between p-4 rounded-lg border border-border hover:bg-muted transition">
-                  <div>
-                    <p className="font-medium">Untitled Form</p>
-                    <p className="text-sm text-muted-foreground">0 responses</p>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <Button variant="other" className="h-10! px-4!">
-                      Edit
-                    </Button>
-                    <Button variant="primary" className="h-10! px-4!">
-                      View
-                    </Button>
-                  </div>
-                </div>
+              {(forms ?? []).map((form) => (
+                <FormCard key={form.id} form={form} />
               ))}
             </div>
           )}
-
         </div>
 
         {/* Empty State */}
@@ -153,7 +205,6 @@ export default function Dashboard() {
             Create your first form
           </Button>
         </div>
-
       </main>
     </div>
   )

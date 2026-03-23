@@ -18,7 +18,7 @@ export default function SignInForm() {
 
 
   const errorParam = searchParams.get('error');
-  const callbackUrl = searchParams.get('callbackUrl') || '/getting-started';
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -46,9 +46,13 @@ export default function SignInForm() {
       });
 
       if (result?.error) {
-        setError('Invalid email or password');
+        if (result.error.includes('verify your email')) {
+          setError('Please verify your email before signing in.');
+        } else {
+          setError('Invalid email or password');
+        }
       } else if (result?.ok) {
-        router.push(callbackUrl);
+        router.replace(callbackUrl);
         router.refresh();
       }
     } catch (err) {
