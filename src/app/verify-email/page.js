@@ -59,10 +59,33 @@ export default function VerifyEmailPage() {
 
             if (!res.ok) {
                 setError(data.error || t('auth.verify.errors.invalidCode'))
+                setLoading(false);
                 return
             }
 
+            // Try auto sign-in with stored password
+            const storedPassword = sessionStorage.getItem('pendingPassword')
+
+            if (storedPassword) {
+                
+                const result = await signIn('credentials', {
+                    email: data.email,
+                    password: storedPassword,
+                    redirect: false,
+                })
+
+                sessionStorage.removeItem('pendingEmail')
+                sessionStorage.removeItem('pendingPassword')
+
+                if (result?.ok) {
+                    router.push('/dashboard')
+                    return
+                }
+            }
+
+            // Fallback: cross-device or sessionStorage unavailable
             router.push('/signin')
+
         } finally {
             setLoading(false)
         }
@@ -127,9 +150,9 @@ export default function VerifyEmailPage() {
 
             {/* Back */}
             <div className="w-full max-w-130 mb-6">
-                <Link href="/signin" className="text-muted-foreground hover:text-foreground">
+                <button onClick={() => router.back()} className="text-muted-foreground hover:text-foreground">
                     <Icon name="back" className="w-5 h-5" />
-                </Link>
+                </button>
             </div>
 
             <div className="w-full max-w-130">
@@ -175,7 +198,7 @@ export default function VerifyEmailPage() {
                     variant="primary"
                     size="large"
                     loading={loading}
-                    onClick={handleVerify}
+                    onClick={handleSubmit}
                     className="rounded-xl! mt-4 bg-blue-600! hover:bg-blue-700! text-lg!"
                 >
                     {t('auth.verify.verifyButton')}
