@@ -7,6 +7,7 @@ import Icon from '@/icons/Icon'
 import { usePathname } from "next/navigation";
 import NavLink from '../_components/NavLink'
 import StatCard from '../_components/StatCard'
+import { signOut } from 'next-auth/react';
 
 export default function Dashboard() {
 
@@ -41,6 +42,7 @@ export default function Dashboard() {
             variant="other"
             className="w-full mt-6"
             icon={<Icon name="logout" className="w-4 h-4" />}
+            onClick={() => signOut({ callbackUrl: '/home' })}
           >
             Log out
           </Button>
@@ -57,18 +59,15 @@ export default function Dashboard() {
             <p className="text-muted-foreground text-sm">Manage your forms and track responses</p>
           </div>
 
-          <Button className="rounded-xl! bg-blue-600! hover:bg-blue-700!">
+          <Link href="builder" className="rounded-xl! p-3! text-white bg-blue-600! hover:bg-blue-700!">
             + Create Form
-          </Button>
+          </Link>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {["Forms", "Responses", "Views", "Conversion"].map((item, i) => (
-            // <div key={i} className="p-5 rounded-xl border border-border bg-card">
-            //   <p className="text-sm text-muted-foreground mb-1">{item}</p>
-            //   <h3 className="text-xl font-medium">0</h3>
-            // </div>
+            
 
             <StatCard
               key={i}
