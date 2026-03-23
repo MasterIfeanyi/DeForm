@@ -4,36 +4,41 @@ import React from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui'
 import Icon from '@/icons/Icon'
+import { usePathname } from "next/navigation";
+import NavLink from '../_components/NavLink'
+import StatCard from '../_components/StatCard'
 
 export default function Dashboard() {
+
+  const navItems = [
+    { href: "/dashboard", label: "Dashboard", icon: "home" },
+    { href: "/forms", label: "My Forms", icon: "document" },
+    { href: "/analytics", label: "Analytics", icon: "chart" },
+    { href: "/settings", label: "Settings", icon: "settings" },
+  ];
+
+
   return (
     <div className="min-h-screen bg-background flex">
 
       {/* Sidebar */}
-      <aside className="w-64 border-r border-border p-5 hidden md:flex flex-col">
+      <aside className="w-54 border-r border-border p-5 hidden md:flex flex-col">
         <div className="flex items-center gap-2 mb-8">
           <Icon name="document" className="w-5 h-5" />
           <span className="font-medium">DeForm.</span>
         </div>
 
         <nav className="flex flex-col gap-2 text-sm">
-          <Link href="/dashboard" className="flex items-center gap-2 px-3 py-2 rounded-lg bg-accent text-accent-foreground">
-            <Icon name="home" className="w-4 h-4" /> Dashboard
-          </Link>
-          <Link href="#" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted">
-            <Icon name="document" className="w-4 h-4" /> My Forms
-          </Link>
-          <Link href="#" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted">
-            <Icon name="chart" className="w-4 h-4" /> Analytics
-          </Link>
-          <Link href="#" className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-muted">
-            <Icon name="settings" className="w-4 h-4" /> Settings
-          </Link>
+          {navItems.map((item) => (
+            <NavLink key={item.href} href={item.href} icon={item.icon}>
+              {item.label}
+            </NavLink>
+          ))}
         </nav>
 
         <div className="mt-auto">
-          <Button 
-            variant="other" 
+          <Button
+            variant="other"
             className="w-full mt-6"
             icon={<Icon name="logout" className="w-4 h-4" />}
           >
@@ -60,10 +65,18 @@ export default function Dashboard() {
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {["Forms", "Responses", "Views", "Conversion"].map((item, i) => (
-            <div key={i} className="p-5 rounded-xl border border-border bg-card">
-              <p className="text-sm text-muted-foreground mb-1">{item}</p>
-              <h3 className="text-xl font-medium">0</h3>
-            </div>
+            // <div key={i} className="p-5 rounded-xl border border-border bg-card">
+            //   <p className="text-sm text-muted-foreground mb-1">{item}</p>
+            //   <h3 className="text-xl font-medium">0</h3>
+            // </div>
+
+            <StatCard
+              key={i}
+              title="Responses"
+              value="1,245"
+              icon="chart"
+              subtitle="All responses"
+            />
           ))}
         </div>
 
@@ -76,7 +89,7 @@ export default function Dashboard() {
 
           <div className="space-y-3">
 
-            {[1,2,3].map((item) => (
+            {[1, 2, 3].map((item) => (
               <div key={item} className="flex items-center justify-between p-4 rounded-lg border border-border hover:bg-muted transition">
                 <div>
                   <p className="font-medium">Untitled Form</p>
