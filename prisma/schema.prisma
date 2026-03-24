@@ -167,6 +167,8 @@ model Form {
     submissions Submission[]
     webhooks    Webhook[]
 
+    @@index([userId])
+    @@index([userId, updatedAt(sort: Desc)])
     @@map("forms")
 }
 

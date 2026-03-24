@@ -63,7 +63,7 @@ export default function FormBuilder() {
   }, [formTitle, formDescription, fields]);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-background text-black">
       {/* Header */}
       <header className="border-b border-neutral-800 bg-neutral-950/80 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-450 mx-auto px-6 py-4">

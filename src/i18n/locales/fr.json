@@ -1,61 +1,177 @@
 {
-"common": {
+  "common": {
     "submit": "Soumettre",
     "cancel": "Annuler"
-},
-
-"form": {
+  },
+  "form": {
     "title": "Constructeur de formulaire",
     "create": "Créer un formulaire",
     "name": "Nom du formulaire"
-},
-
-"builder": {
+  },
+  "auth": {
+    "signIn": {
+      "title": "Se connecter",
+      "emailPlaceholder": "Adresse e-mail ou numéro de mobile",
+      "passwordPlaceholder": "Mot de passe",
+      "loginButton": "Se connecter",
+      "forgotPassword": "Mot de passe oublié ?",
+      "createAccount": "Créer un nouveau compte"
+    },
+    "signUp": {
+      "title": "Commencer sur DeForm",
+      "subtitle": "Créez un compte pour commencer à créer et partager des formulaires instantanément.",
+      "nameLabel": "Nom",
+      "firstNamePlaceholder": "Prénom",
+      "lastNamePlaceholder": "Nom de famille",
+      "emailLabel": "Adresse e-mail",
+      "emailPlaceholder": "exemple@email.com",
+      "passwordLabel": "Mot de passe",
+      "passwordPlaceholder": "Mot de passe",
+      "legalPrefix": "En appuyant sur Soumettre, vous acceptez les",
+      "terms": "Conditions",
+      "privacy": "Politique de confidentialité",
+      "legalAnd": "et",
+      "cookies": "Politique des cookies",
+      "alreadyHaveAccount": "J'ai déjà un compte",
+      "errors": {
+        "firstNameRequired": "Le prénom est obligatoire",
+        "lastNameRequired": "Le nom de famille est obligatoire",
+        "emailRequired": "L'e-mail est obligatoire",
+        "emailInvalid": "Entrez une adresse e-mail valide",
+        "passwordRequired": "Le mot de passe est obligatoire",
+        "passwordMinLength": "Le mot de passe doit contenir au moins 8 caractères"
+      }
+    },
+    "landing": {
+      "nav": {
+        "logIn": "Se connecter",
+        "signUp": "S'inscrire"
+      },
+      "hero": {
+        "title": "Créez des formulaires en quelques secondes.",
+        "titleHighlight": "Partagez instantanément.",
+        "description": "Créez de beaux formulaires, collectez des réponses et analysez les résultats. Aucun codage requis. Open source et gratuit pour toujours.",
+        "ctaPrimary": "Commencer gratuitement",
+        "ctaSecondary": "En savoir plus"
+      },
+      "footer": {
+        "copyright": "© 2026 DeForm. Open Source et gratuit pour toujours."
+      }
+    },
+    "verify": {
+      "title": "Vérifiez votre e-mail",
+      "subtitle": "Entrez le code de vérification envoyé à",
+      "codeLabel": "Code de vérification",
+      "codePlaceholder": "ex. uZTzAL5h",
+      "verifyButton": "Vérifier l'e-mail",
+      "noCode": "Vous n'avez pas reçu le code ?",
+      "resend": "Renvoyer le code",
+      "resendIn": "Renvoyer dans {seconds}s",
+      "backToLogin": "Retour à la connexion",
+      "errors": {
+        "codeRequired": "Le code de vérification est obligatoire",
+        "invalidCode": "Code invalide ou expiré"
+      }
+    }
+  },
+  "builder": {
     "name": "Constructeur DeForm",
     "tagline": "Créateur de formulaires de niveau professionnel",
-
-
     "actions": {
-        "copyHtml": "Copier le HTML",
-        "export": "Exporter"
+      "copyHtml": "Copier le HTML",
+      "export": "Exporter"
     },
-
     "fieldTypes": {
-        "title": "Types de champs",
-        "description": "Cliquez pour ajouter au formulaire"
+      "title": "Types de champs",
+      "description": "Cliquez pour ajouter au formulaire"
     },
-
     "settings": {
-        "title": "Paramètres du formulaire",
-        "formTitle": "Titre du formulaire",
-        "formTitlePlaceholder": "ex. Formulaire de candidature",
-        "description": "Description",
-        "descriptionPlaceholder": "Brève description de votre formulaire"
+      "title": "Paramètres du formulaire",
+      "formTitle": "Titre du formulaire",
+      "formTitlePlaceholder": "ex. Formulaire de candidature",
+      "description": "Description",
+      "descriptionPlaceholder": "Brève description de votre formulaire"
     },
-
     "canvas": {
-        "title": "Champs du formulaire",
-        "count": "{{count}} champs",
-        "emptyTitle": "Aucun champ ajouté",
-        "emptyDescription": "Cliquez sur un type de champ à gauche pour l'ajouter"
+      "title": "Champs du formulaire",
+      "count": "{{count}} champs",
+      "emptyTitle": "Aucun champ ajouté",
+      "emptyDescription": "Cliquez sur un type de champ à gauche pour l'ajouter",
+      "dropHere": "Déposez le fichier ici",
+      "clickToUpload": "Cliquez ou glissez pour téléverser",
+      "maxSize": "Max {{size}}",
+      "uploading": "Téléversement en cours...",
+      "uploadSuccess": "Téléversé avec succès",
+      "tryAgain": "Cliquez pour réessayer"
     },
-
     "preview": {
-        "title": "Aperçu en direct",
-        "description": "Voyez votre formulaire en temps réel",
-        "defaultTitle": "Titre de votre formulaire",
-        "defaultDescription": "La description du formulaire apparaîtra ici",
-        "empty": "Ajoutez des champs pour les voir ici"
+      "title": "Aperçu en direct",
+      "description": "Voyez votre formulaire en temps réel",
+      "defaultTitle": "Titre de votre formulaire",
+      "defaultDescription": "La description du formulaire apparaîtra ici",
+      "empty": "Ajoutez des champs pour les voir ici"
     }
-},
-    "fieldTypes": {
-        "text": "Texte court",
-        "email": "Email",
-        "tel": "Numéro de téléphone",
-        "number": "Nombre",
-        "date": "Date",
-        "file": "Téléversement de fichier",
-        "rating": "Évaluation",
-        "checkbox": "Case à cocher"
+  },
+  "fieldTypes": {
+    "text": "Texte court",
+    "email": "E-mail",
+    "tel": "Numéro de téléphone",
+    "number": "Nombre",
+    "date": "Date",
+    "file": "Téléversement de fichier",
+    "rating": "Évaluation",
+    "checkbox": "Case à cocher"
+  },
+  "fields": {
+    "default": {
+      "text": {
+        "label": "Question sans titre",
+        "placeholder": "Tapez votre réponse ici..."
+      },
+      "email": {
+        "label": "Adresse e-mail",
+        "placeholder": "exemple@email.com"
+      },
+      "tel": {
+        "label": "Numéro de téléphone",
+        "placeholder": "+33 6 00 00 00 00"
+      },
+      "number": {
+        "label": "Nombre",
+        "placeholder": "0"
+      },
+      "date": {
+        "label": "Date"
+      },
+      "file": {
+        "label": "Téléverser un fichier"
+      },
+      "rating": {
+        "label": "Évaluez votre expérience"
+      },
+      "checkbox": {
+        "label": "Sélectionnez les options"
+      }
     }
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "subtitle": "Gérez vos formulaires et suivez les réponses",
+    "createForm": "+ Créer un formulaire",
+    "recentForms": {
+      "title": "Formulaires récents",
+      "viewAll": "Voir tout",
+      "responses": "{{count}} réponses",
+      "noForms": {
+        "title": "Aucun formulaire pour l'instant",
+        "description": "Créez votre premier formulaire pour commencer à collecter des réponses",
+        "cta": "Créer votre premier formulaire"
+      },
+      "actions": {
+        "edit": "Modifier",
+        "delete": "Supprimer",
+        "share": "Partager"
+      }
+    }
+  }
 }

@@ -15,7 +15,11 @@ import {
   FiHome,
   FiBarChart2,
   FiChevronDown,
-  FiSettings
+  FiSettings,
+  FiMoreVertical, 
+  FiEdit2, 
+  FiTrash2, 
+  FiShare2
 } from "react-icons/fi";
 
 import { FaBars, FaTimes } from 'react-icons/fa';
@@ -42,5 +46,9 @@ export const icons = {
   home: FiHome,
   chart: FiBarChart2,
   settings: FiSettings,
-  chevronDown: FiChevronDown, 
+  chevronDown: FiChevronDown,
+  moreVertical: FiMoreVertical,
+  edit: FiEdit2,
+  trash: FiTrash2,
+  share: FiShare2, 
 };
